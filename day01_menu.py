@@ -1,5 +1,3 @@
-# VidyaLoan - Day 01 Menu System
-
 while True:
 
     print("\n========== VIDYALOAN MENU ==========")
