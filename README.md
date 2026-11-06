@@ -2,16 +2,6 @@
 
 **An intelligent, AI-powered platform that simplifies education loan discovery, eligibility understanding, interest subsidy calculation, and application assistance for Indian students.**
 
-<p align="center">
-
-![Python](https://img.shields.io/badge/Python-3.11+-blue?logo=python)
-![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi)
-![AI](https://img.shields.io/badge/AI-LLM%20%7C%20RAG-purple)
-![Status](https://img.shields.io/badge/Project-In%20Development-orange)
-![License](https://img.shields.io/badge/License-MIT-green)
-
-</p>
-
 ---
 
 ## 👨‍💻 Project Information
@@ -20,7 +10,6 @@
 |---|---|
 | Student Name | Tushar Sachin Vargude |
 | PRN | 2124UDSM2015 |
-| Roll Number | 38 |
 | Project Name | VidyaLoan |
 | Project Domain | Artificial Intelligence & Data Science |
 | Institution | Sanjivani University |
