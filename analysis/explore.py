@@ -25,3 +25,4 @@ with_income = (
     else 0
 )
 print(f"Fact 3: {with_income} of {len(df)} records mention an income limit in lakh")
+
