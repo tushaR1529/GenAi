@@ -12,3 +12,4 @@ class Record:
     loan_limit: Optional[str]
     benefit: str
     source_url: str
+    category: Optional[str] = "scheme_rule"
