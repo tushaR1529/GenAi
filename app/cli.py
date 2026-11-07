@@ -1,15 +1,16 @@
 # app/cli.py
 
-from app.records import load_records, search, count_by, get_by_id
+from app.records import count_by, get_by_id, load_records, search
 
 
 def show(record):
-    print(f"[{record['id']}] {record['scheme_name']} ({record['category']})")
-    print(f"    Eligible : {record['who_is_eligible']}")
-    print(f"    Income   : {record['income_limit']}")
-    print(f"    Limit    : {record['loan_limit']}")
-    print(f"    Benefit  : {record['benefit']}")
-    print(f"    Source   : {record['source_url']}\n")
+    category = record.get("category", "scheme_rule")
+    print(f"[{record.get('id')}] {record.get('scheme_name')} ({category})")
+    print(f"    Eligible : {record.get('who_is_eligible')}")
+    print(f"    Income   : {record.get('income_limit')}")
+    print(f"    Limit    : {record.get('loan_limit')}")
+    print(f"    Benefit  : {record.get('benefit')}")
+    print(f"    Source   : {record.get('source_url')}\n")
 
 
 def main():
