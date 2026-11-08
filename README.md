@@ -20,6 +20,7 @@
 - **RESTful FastAPI Service:** Endpoints for health checks, record retrieval, TF-IDF smart search, and logging user queries (`app/main.py`).
 - **Exploratory Data Analysis:** Fast pandas-based dataset profiling computing distribution across schemes, categories, and income limits (`analysis/explore.py`).
 - **Interactive CLI & Exploration:** Command-line interface for searching and inspecting scheme records (`app/cli.py`).
+- **Checkpoint 1 Documentation:** Explanation of LLM fundamentals, RAG architecture flowchart, and 10 representative user questions (`docs/how_llms_work.md`).
 
 ---
 
@@ -51,8 +52,10 @@
 │   │   ├── pm_vidyalaxmi_faq.html
 │   │   └── pm_vidyalaxmi_guidelines.pdf
 │   ├── questions.json         # User questions submitted via POST /questions
-│   ├── records.json           # Ingested scheme records (59+ structured entries)
+│   ├── records.json           # Ingested scheme records (59 structured entries)
 │   └── sample_records.py      # Baseline seed records
+├── docs/
+│   └── how_llms_work.md       # How LLMs work, diagram, 10 user questions, Checkpoint 1
 ├── day01_intro.py             # Day 1 project card demonstration
 ├── requirements.txt           # Project dependencies
 └── README.md                  # Project documentation & instructions
@@ -85,7 +88,7 @@ Prints 3 key dataset facts using Pandas:
 python analysis/explore.py
 ```
 
-### 5. Launch FastAPI Service (Day 4)
+### 5. Launch FastAPI Service (Day 4 & Checkpoint 1)
 Start the REST API server:
 ```bash
 uvicorn app.main:app --reload --port 8000
@@ -112,7 +115,7 @@ Open interactive Swagger documentation in your browser at:
   ```
 - `POST /questions`: Saves a user question into `data/questions.json`.
   ```bash
-  curl -X POST http://127.0.0.1:8000/questions -H "Content-Type: application/json" -d "{\"question\": \"What is the moratorium period for PM-Vidyalaxmi?\"}"
+  curl -X POST http://127.0.0.1:8000/questions -H "Content-Type: application/json" -d "{\"question\": \"Can I get loan for diploma?\"}"
   ```
 
 ### 6. Interactive Command-Line Tool
@@ -124,5 +127,5 @@ python -m app.cli
 
 ## Developer
 
-**Tushar Sachin Vargude** | PRN: 2124UDSM2015 | Roll No.: 15
+**Tushar Sachin Vargude** | PRN: 2124UDSM2015 | Roll No.: 15  
 Sanjivani University | Domain: Artificial Intelligence and Data Science  
