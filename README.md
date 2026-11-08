@@ -124,5 +124,5 @@ python -m app.cli
 
 ## Developer
 
-**Tushar Sachin Vargude** | PRN: 2124UDSM2015 | Roll No.: 38  
+**Tushar Sachin Vargude** | PRN: 2124UDSM2015 | Roll No.: 15
 Sanjivani University | Domain: Artificial Intelligence and Data Science  

@@ -88,3 +88,4 @@ def search(q: str, top_k: int = 5):
 2. **TF-IDF Vectorization:** The query is transformed into a TF-IDF vector using the pre-fitted vectorizer trained on all ingested scheme records (`scheme_name`, `who_is_eligible`, `income_limit`, `loan_limit`, `benefit`).
 3. **Cosine Similarity Computation:** The angle between the query vector and every record vector is computed to determine relevance.
 4. **Ranking & Filtering:** Records are sorted in descending order of similarity score. Only records with positive relevance scores are returned up to `top_k`.
+
