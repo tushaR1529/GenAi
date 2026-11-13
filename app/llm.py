@@ -34,16 +34,35 @@ def clean_json_response(raw_text: str) -> Dict[str, Any]:
     if text.startswith("```"):
         text = re.sub(r"^```(?:json)?\s*", "", text)
         text = re.sub(r"\s*```$", "", text)
+    parsed: Dict[str, Any] = {}
     try:
-        return json.loads(text)
+        parsed = json.loads(text)
     except json.JSONDecodeError:
         # Attempt to find JSON object pattern
         match = re.search(r"\{.*\}", text, re.DOTALL)
         if match:
             try:
-                return json.loads(match.group(0))
+                parsed = json.loads(match.group(0))
             except json.JSONDecodeError:
                 pass
+
+    if isinstance(parsed, dict) and "answer" in parsed:
+        # Ensure answer is string
+        if not isinstance(parsed.get("answer"), str):
+            parsed["answer"] = str(parsed.get("answer", ""))
+        # Ensure confidence is float
+        try:
+            parsed["confidence"] = float(parsed.get("confidence", 0.90))
+        except (ValueError, TypeError):
+            parsed["confidence"] = 0.90
+        # Ensure follow_up is a string
+        follow_up = parsed.get("follow_up")
+        if isinstance(follow_up, list):
+            parsed["follow_up"] = " ".join(str(f).strip() for f in follow_up if f)
+        elif not isinstance(follow_up, str):
+            parsed["follow_up"] = str(follow_up or "")
+        return parsed
+
     return {
         "answer": text,
         "confidence": 0.75,
@@ -60,8 +79,10 @@ class LLMClient:
         groq_api_key: Optional[str] = None,
         gemini_api_key: Optional[str] = None,
     ):
-        self.groq_api_key = groq_api_key or os.getenv("GROQ_API_KEY")
-        self.gemini_api_key = gemini_api_key or os.getenv("GEMINI_API_KEY")
+        raw_groq = groq_api_key or os.getenv("GROQ_API_KEY", "")
+        raw_gemini = gemini_api_key or os.getenv("GEMINI_API_KEY", "")
+        self.groq_api_key = raw_groq.strip().strip("\"'")
+        self.gemini_api_key = raw_gemini.strip().strip("\"'")
 
         # Determine active provider
         env_provider = os.getenv("LLM_PROVIDER", "").lower()
@@ -69,15 +90,15 @@ class LLMClient:
             self.provider = provider.lower()
         elif env_provider in ("groq", "gemini"):
             self.provider = env_provider
-        elif self.groq_api_key and not self.groq_api_key.startswith("gsk_your"):
-            self.provider = "groq"
         elif self.gemini_api_key and not self.gemini_api_key.startswith("your_"):
             self.provider = "gemini"
+        elif self.groq_api_key and not self.groq_api_key.startswith("gsk_your"):
+            self.provider = "groq"
         else:
             self.provider = "fallback"
 
         self.groq_model = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
-        self.gemini_model = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+        self.gemini_model = os.getenv("GEMINI_MODEL", "gemini-3.5-flash")
 
         self.system_prompt = load_prompt(SYSTEM_PROMPT_PATH)
         self.task_v1_template = load_prompt(TASK_PROMPT_V1_PATH)
@@ -105,8 +126,11 @@ class LLMClient:
 
     def _call_gemini(self, prompt: str) -> Dict[str, Any]:
         """Send generation request to Google Gemini API."""
-        url = f"{GEMINI_API_URL}/{self.gemini_model}:generateContent?key={self.gemini_api_key}"
-        headers = {"Content-Type": "application/json"}
+        url = f"{GEMINI_API_URL}/{self.gemini_model}:generateContent"
+        headers = {
+            "x-goog-api-key": self.gemini_api_key,
+            "Content-Type": "application/json",
+        }
         payload = {
             "system_instruction": {"parts": [{"text": self.system_prompt}]},
             "contents": [{"parts": [{"text": prompt}]}],

@@ -3,135 +3,135 @@
     "id": 1,
     "question": "Can I get loan to get admission in Sanjivani University?",
     "v1": {
-      "answer": "Education loans can be availed for Sanjivani University courses through participating banks on the PM-Vidyalaxmi portal. Specific benefits like the 3% interest subvention depend on whether the institution meets the current NIRF QHEI eligibility criteria.",
-      "confidence": 0.88,
-      "follow_up": "Check the institution search tool at pmvidyalaxmi.co.in to verify your course listing."
+      "answer": "Yes, you can apply for an education loan for recognized technical and professional programs at Sanjivani University in India through the unified PM-Vidyalaxmi portal. Depending on your financial profile and institution eligibility, benefits include: 1) PM-USP CSIS: Offers a 100% interest subsidy during the moratorium period (course duration + 1 year) on loans up to Rs. 10 lakh for Economically Weaker Section (EWS) students with an annual family income up to Rs. 4.5 lakh. 2) PM-Vidyalaxmi Scheme: Provides collateral-free loans with a 75% credit guarantee for loans up to Rs. 7.5 lakh, and a 3% interest subvention during moratorium for loans up to Rs. 10 lakh (for annual family income up to Rs. 8 lakh), provided the institute/course is listed among eligible Quality Higher Education Institutions (QHEIs) based on NIRF rankings.",
+      "confidence": 0.95,
+      "follow_up": "Verify if your selected course at Sanjivani University is AICTE/UGC approved and check the institution's QHEI eligibility status on the PM-Vidyalaxmi portal (https://pmvidyalaxmi.co.in) before submitting your application."
     },
     "v2": {
-      "answer": "Yes, education loans under the IBA Model Scheme are available for students securing admission to Sanjivani University. For the PM-Vidyalaxmi 3% interest subvention and 75% credit guarantee, the institution must be an eligible Quality Higher Education Institution (QHEI)\u2014defined as being in the top 100 overall/category NIRF rankings or top 200 for state government HEIs. You can search for Sanjivani University directly in the institution dropdown on the PM-Vidyalaxmi portal.",
-      "confidence": 0.9,
-      "follow_up": "Would you like help verifying whether your specific course at Sanjivani University is listed under the portal's approved institution directory?"
+      "answer": "Executive Summary:\nYes, you can apply for an education loan to pursue your studies at Sanjivani University (a recognized domestic institution in India). The exact benefits—such as interest subsidies or subventions—depend on your family's annual income, course approval, and the university's eligibility under government schemes.\n\nStructured Scheme Breakdown:\n\n1. Eligibility Checklist:\n- Institution Status: Must be a recognized domestic university offering approved professional or technical courses. For PM-Vidyalaxmi benefits, institutions are categorized based on top NIRF rankings (QHEIs).\n- Income Ceiling:\n  * PM-USP CSIS: Gross annual family income up to Rs. 4.5 lakh (for 100% interest subsidy).\n  * PM-Vidyalaxmi: Gross annual family income up to Rs. 8.0 lakh (for 3% interest subvention).\n- Student Eligibility: Indian national admitted through a merit-based/transparent admission process.\n\n2. Financial Benefits:\n- Collateral-Free Limit: Education loans up to Rs. 7.5 lakh are collateral-free and guarantor-free, backed by a 75% credit guarantee via NCGTC (CGFSEL).\n- Moratorium Period: Total course duration plus 1 year (or 6 months post-employment, whichever is earlier).\n- Subsidy/Subvention Details: 100% interest paid by the Central Government during moratorium under CSIS (income <= 4.5L) or 3% subvention on loans up to Rs. 10 lakh under PM-Vidyalaxmi (income <= 8L).\n- Repayment Tenure: Flexible repayment period of up to 15 years after the moratorium ends.\n\n3. Portal Application Steps:\n- Visit the official unified portal: https://pmvidyalaxmi.co.in.\n- Complete the registration and fill out the Common Education Loan Application Form (CELAF).\n- Upload required documents including your admission offer letter from Sanjivani University, fee structure, academic marksheets, and official family income certificate issued by an authorized state authority.\n- Select your preferred bank to process the digital application.",
+      "confidence": 0.95,
+      "follow_up": "Would you like help verifying whether your specific course at Sanjivani University qualifies for the 100% PM-USP CSIS interest subsidy or the 3% PM-Vidyalaxmi interest subvention based on your family's annual income?"
     }
   },
   {
     "id": 2,
     "question": "Can I get loan for diploma?",
     "v1": {
-      "answer": "Yes, you can get an education loan for diploma programs. Professional and technical diplomas recognized by regulatory bodies qualify under both PM-Vidyalaxmi (at eligible QHEIs) and PM-USP CSIS (with full interest subsidy if income is under Rs. 4.5 lakh).",
-      "confidence": 0.92,
-      "follow_up": "Would you like to know the required documents to apply for a diploma education loan?"
+      "answer": "Yes, education loans are available for approved professional and technical diploma courses offered by recognized institutions in India under the IBA Model Education Loan Scheme. Additionally, under the PM-USP CSIS (Central Sector Interest Subsidy) scheme, eligible students with an annual family income up to Rs. 4.5 lakh pursuing recognized professional or technical diploma courses can receive a 100% interest subsidy during the moratorium period (course duration + 1 year) for loans up to Rs. 10 lakh.",
+      "confidence": 1.0,
+      "follow_up": "Would you like to check if your specific diploma course and institute qualify for the PM-USP CSIS interest subsidy or apply through the central portal?"
     },
     "v2": {
-      "answer": "Yes, loans for diploma courses are eligible under government schemes. Under PM-Vidyalaxmi, all degree and diploma programs offered by designated QHEIs qualify for collateral-free education loans. Under PM-USP CSIS, professional and technical diploma programs recognized by AICTE/State Technical Boards qualify for full interest subvention during the moratorium period if family income is up to Rs. 4.5 lakh.",
-      "confidence": 0.95,
-      "follow_up": "Is your diploma program a technical/polytechnic diploma, and what is your annual family income?"
+      "answer": "Yes, you can get an education loan for a diploma course, provided it is a recognized professional or technical diploma offered by an approved institution in India.\n\n### 1. Executive Summary\nEducation loans and Central Government interest subsidy schemes cover professional and technical diploma courses pursued in India after 10th or 12th standard, provided the institution and course are recognized by competent regulatory bodies (such as AICTE, State Boards of Technical Education, or UGC).\n\n### 2. Eligibility & Scheme Breakdown\n* **Eligibility Checklist:**\n  - **Approved Course Type:** Professional and technical diploma degrees/diplomas recognized by government regulatory bodies in India.\n  - **Income Ceilings:**\n    - **PM-USP CSIS:** Annual family income up to Rs. 4.5 lakh for a 100% interest subsidy during the moratorium period.\n    - **PM-Vidyalaxmi:** Annual family income up to Rs. 8 lakh for a 3% interest subvention on loans up to Rs. 10 lakh.\n  - **Institution Criteria:** Domestic institutions recognized by government regulatory bodies or Quality Higher Education Institutions (QHEIs) registered under PM-Vidyalaxmi.\n\n* **Financial Benefits:**\n  - **Interest Subvention:** 100% interest subsidy under PM-USP CSIS (up to Rs. 4.5 lakh income) or 3% subvention under PM-Vidyalaxmi (up to Rs. 8 lakh income).\n  - **Moratorium Terms:** Course duration plus 1 year (or 6 months after securing employment, whichever is earlier).\n  - **Collateral & Guarantee:** Collateral-free and guarantor-free options available; 75% credit guarantee coverage provided by NCGTC for loans up to Rs. 7.5 lakh.\n\n* **Portal Application Steps:**\n  1. Visit the unified digital portal at https://pmvidyalaxmi.co.in.\n  2. Register and complete the Common Education Loan Application Form (CELAF).\n  3. Upload required documents, including parental income certificate, diploma admission proof, and marksheets.\n  4. Track application status and subvention approval directly on the portal.",
+      "confidence": 1.0,
+      "follow_up": "What specific diploma course are you planning to pursue, and is your institution AICTE or government-recognized?"
     }
   },
   {
     "id": 3,
     "question": "What is the income limit for 3% interest subvention under PM-Vidyalaxmi?",
     "v1": {
-      "answer": "Under PM-Vidyalaxmi, students with an annual gross family income of up to Rs. 8 lakh are eligible for a 3% interest subvention on education loans up to Rs. 10 lakh during the moratorium period (course duration + 1 year). This benefit is capped at 1 lakh meritorious students per year.",
-      "confidence": 0.97,
-      "follow_up": "Do you also meet the criteria for admission into a recognized QHEI?"
+      "answer": "Under the PM-Vidyalaxmi scheme, the annual family income limit to qualify for the 3% interest subvention is up to Rs. 8 lakh. This subvention applies during the moratorium period for education loans up to Rs. 10 lakh, targeted at meritorious students pursuing domestic higher education in eligible Quality Higher Education Institutions (QHEIs), capped at 1 lakh students per year.",
+      "confidence": 1.0,
+      "follow_up": "Would you like guidance on how to check eligible QHEI institutions or apply on the PM-Vidyalaxmi portal (pmvidyalaxmi.co.in)?"
     },
     "v2": {
-      "answer": "Under PM-Vidyalaxmi, students with an annual gross family income of up to Rs. 8 lakh are eligible for a 3% interest subvention on education loans up to Rs. 10 lakh during the moratorium period (course duration + 1 year). This benefit is capped at 1 lakh meritorious students per year.",
-      "confidence": 0.97,
-      "follow_up": "Do you also meet the criteria for admission into a recognized QHEI?"
+      "answer": "Executive Summary:\nUnder the PM-Vidyalaxmi scheme, the maximum annual family income limit to qualify for the 3% interest subvention is Rs. 8 lakh per annum.\n\nStructured Breakdown:\n\n1. Eligibility Checklist:\n- Annual Family Income Ceiling: Gross family income up to Rs. 8 lakh per year.\n- Eligible Institutions: Admissions secured in Quality Higher Education Institutions (QHEIs) in India identified under NIRF rankings / central institution listings.\n- Course Scope: Domestic higher education courses in India only.\n\n2. Financial Benefits:\n- Interest Subvention: 3% interest subvention during the moratorium period on loan amounts up to Rs. 10 lakh (annually capped at 1 lakh meritorious students, prioritizing technical/professional streams).\n- Moratorium Terms: Course duration plus 1 year (or up to 6 months after securing employment, whichever is earlier).\n- Guarantee Coverage: 75% credit guarantee for loans up to Rs. 7.5 lakh under NCGTC without needing third-party guarantors or collateral.\n\n3. Portal Application Steps:\n- Register and apply digitally at the official unified portal: https://pmvidyalaxmi.co.in.\n- Fill out the Common Education Loan Application Form (CELAF).\n- Upload required income proof (Income Certificate issued by designated State/Central authority) and QHEI admission confirmation.",
+      "confidence": 1.0,
+      "follow_up": "Would you like help verifying whether your target college/university falls under the official Quality Higher Education Institutions (QHEI) list for PM-Vidyalaxmi?"
     }
   },
   {
     "id": 4,
     "question": "What is the maximum loan limit covered by the 75% credit guarantee?",
     "v1": {
-      "answer": "Under PM-Vidyalaxmi and CGFSEL, the Government of India provides a 75% credit guarantee for education loans up to Rs. 7.5 lakh. This allows students to secure loans completely collateral-free and without any third-party guarantor.",
-      "confidence": 0.98,
-      "follow_up": "Would you like guidance on which member banks offer this collateral-free facility?"
+      "answer": "Under the PM-Vidyalaxmi scheme, the maximum loan limit covered by the 75% credit guarantee (provided by the Government of India through NCGTC) is Rs. 7.5 lakh. Loans up to this amount are completely collateral-free and guarantor-free for eligible students admitted to Quality Higher Education Institutions (QHEIs) in India.",
+      "confidence": 1.0,
+      "follow_up": "Would you like guidance on how to apply for this collateral-free loan using the Common Education Loan Application Form (CELAF) on pmvidyalaxmi.co.in?"
     },
     "v2": {
-      "answer": "Under PM-Vidyalaxmi and CGFSEL, the Government of India provides a 75% credit guarantee for education loans up to Rs. 7.5 lakh. This allows students to secure loans completely collateral-free and without any third-party guarantor.",
-      "confidence": 0.98,
-      "follow_up": "Would you like guidance on which member banks offer this collateral-free facility?"
+      "answer": "Executive Summary:\nUnder the PM-Vidyalaxmi scheme and Credit Guarantee Fund Scheme for Education Loans (CGFSEL), the maximum loan limit covered by the 75% credit guarantee is Rs. 7.5 lakh. This guarantee is provided by the Government of India through NCGTC to ensure collateral-free and guarantor-free access to education loans.\n\nStructured Breakdown:\n\n1. Eligibility Checklist:\n- Income Ceiling: No income limit for collateral-free guarantee up to Rs. 7.5 lakh; however, an annual family income limit of up to Rs. 8 lakh applies for the 3% interest subvention benefit (capped at 1 lakh students/year).\n- Approved Course Type: Approved domestic higher education professional and technical courses.\n- Eligible Institutions: Top Quality Higher Education Institutions (QHEIs) in India recognized under NIRF rankings and central institution lists.\n\n2. Financial Benefits:\n- Credit Guarantee: 75% guarantee coverage by NCGTC for loan amounts up to Rs. 7.5 lakh.\n- Interest Subvention: 3% interest subvention during the moratorium period on education loans up to Rs. 10 lakh for eligible income groups.\n- Moratorium Period: Entire course duration + 1 year (or 6 months after securing employment, whichever is earlier).\n\n3. Portal Application Steps:\n- Visit the official unified portal at https://pmvidyalaxmi.co.in.\n- Register and fill out the Common Education Loan Application Form (CELAF).\n- Select your QHEI institution and preferred lending bank to submit your application online.",
+      "confidence": 1.0,
+      "follow_up": "Would you like help checking if your prospective college is listed as an eligible Quality Higher Education Institution (QHEI) under the PM-Vidyalaxmi portal?"
     }
   },
   {
     "id": 5,
     "question": "What documents need to be uploaded on the PM-Vidyalaxmi portal?",
     "v1": {
-      "answer": "The mandatory documents for PM-Vidyalaxmi application are: (1) Marksheets of Class X and Class XII/qualifying examination, (2) Official admission letter/proof from the institution, (3) Detailed schedule of course fees/expenses, (4) Income certificate issued by a designated government authority (e.g. Tehsildar/SDM), (5) Aadhaar card, and (6) Passport-size photographs of the student and parent/co-applicant.",
-      "confidence": 0.96,
-      "follow_up": "Ensure documents are in PDF or JPEG format under 200 KB each before uploading."
+      "answer": "To apply for an education loan under the PM-Vidyalaxmi scheme on the portal (https://pmvidyalaxmi.co.in), you need to complete the Common Education Loan Application Form (CELAF) and upload the following standard documents: 1. Proof of Identity and Address (Aadhaar Card, PAN Card, Passport, etc. for student and co-applicant/parent). 2. Academic Records (Mark sheets/certificates of 10th, 12th, and qualifying undergraduate degree/entrance exams). 3. Proof of Admission (Admission letter/Offer letter from an eligible Quality Higher Education Institution - QHEI). 4. Course Fee Structure (Detailed schedule of expenses issued by the institution). 5. Income Certificate (Official government-issued family income certificate for claiming the 3% interest subvention if annual family income is up to Rs. 8 lakh). 6. Bank Account Statements (Last 6 months bank statement of the student/parent). 7. Passport-size Photographs of student and co-applicant.",
+      "confidence": 0.95,
+      "follow_up": "Would you like guidance on how to check if your institution is listed among the eligible Quality Higher Education Institutions (QHEIs) under PM-Vidyalaxmi?"
     },
     "v2": {
-      "answer": "The mandatory documents for PM-Vidyalaxmi application are: (1) Marksheets of Class X and Class XII/qualifying examination, (2) Official admission letter/proof from the institution, (3) Detailed schedule of course fees/expenses, (4) Income certificate issued by a designated government authority (e.g. Tehsildar/SDM), (5) Aadhaar card, and (6) Passport-size photographs of the student and parent/co-applicant.",
-      "confidence": 0.96,
-      "follow_up": "Ensure documents are in PDF or JPEG format under 200 KB each before uploading."
+      "answer": "Executive Summary:\nTo apply for a collateral-free education loan on the unified PM-Vidyalaxmi portal (https://pmvidyalaxmi.co.in), students must upload standard identity, academic, financial, and admission documents via the Common Education Loan Application Form (CELAF).\n\nDocument Checklist for PM-Vidyalaxmi Portal:\n1. Proof of Identity & Address: Aadhaar Card, PAN Card, Passport, or Voter ID of the student and parent/co-applicant.\n2. Academic Records: Mark sheets/certificates of Class 10th, Class 12th, graduation (if applicable), and entrance exam rank cards.\n3. Proof of Admission & Fees: Official admission/offer letter from an eligible Quality Higher Education Institution (QHEI) and the approved fee structure schedule.\n4. Income Proof: Valid Family Income Certificate issued by the designated state authority (essential for claiming the 3% interest subvention for annual family income up to Rs. 8 lakh).\n5. Financial Statements: Bank account statements of the student/parent for the last 6 months.\n6. Photographs: Passport-sized photographs of the applicant and parent/guarantor.\n\nEligibility & Financial Overview:\n- Institution Scope: Domestic Quality Higher Education Institutions (QHEIs) in India based on NIRF ratings. Foreign university studies are strictly out of scope.\n- Financial Benefits: 75% credit guarantee for loans up to Rs. 7.5 lakh via NCGTC; 3% interest subvention on loans up to Rs. 10 lakh during the moratorium period (course duration + 1 year) for family income up to Rs. 8 lakh.\n- Digital Application: Direct registration and digital application submission through https://pmvidyalaxmi.co.in.",
+      "confidence": 0.95,
+      "follow_up": "Would you like assistance in checking if your institute is included in the list of eligible QHEIs under PM-Vidyalaxmi?"
     }
   },
   {
     "id": 6,
     "question": "Can I get a loan to study medicine at Oxford University in the UK under PM-Vidyalaxmi?",
     "v1": {
-      "answer": "PM-Vidyalaxmi and PM-USP CSIS are domestic Central Sector schemes that exclusively cover meritorious students admitted to approved Quality Higher Education Institutions (QHEIs) within India. They do not cover foreign universities or medical studies abroad.",
-      "confidence": 0.98,
-      "follow_up": "Would you like information on government schemes that support studies abroad, such as the Padho Pardesh or National Overseas Scholarship schemes?"
+      "answer": "No, you cannot get an education loan under PM-Vidyalaxmi to study at Oxford University in the UK. The PM-Vidyalaxmi scheme exclusively covers domestic higher education programs at eligible Quality Higher Education Institutions (QHEIs) in India based on NIRF and central institution rankings. Studies abroad are not covered under PM-Vidyalaxmi or PM-USP CSIS.",
+      "confidence": 1.0,
+      "follow_up": "Would you like information on eligible domestic medical institutions under PM-Vidyalaxmi or standard education loan options available for foreign studies?"
     },
     "v2": {
-      "answer": "PM-Vidyalaxmi and PM-USP CSIS are domestic Central Sector schemes that exclusively cover meritorious students admitted to approved Quality Higher Education Institutions (QHEIs) within India. They do not cover foreign universities or medical studies abroad.",
-      "confidence": 0.98,
-      "follow_up": "Would you like information on government schemes that support studies abroad, such as the Padho Pardesh or National Overseas Scholarship schemes?"
+      "answer": "Executive Summary:\nNo, you cannot get an education loan under the PM-Vidyalaxmi scheme to study medicine at Oxford University or any other foreign university. The PM-Vidyalaxmi scheme is strictly designed for domestic higher education within India.\n\nScheme Scope & Breakdown:\n1. Eligibility Criteria (Domestic Only):\n   - Eligible Institutions: Limited to top Quality Higher Education Institutions (QHEIs) in India based on NIRF rankings and central institution criteria.\n   - Approved Courses: Professional, technical, and higher education degree programs offered in India.\n   - Income Ceiling: Family income up to Rs. 8 lakh per annum for interest subvention benefits.\n\n2. Key Financial Benefits (Applicable only to approved domestic courses):\n   - Collateral/Guarantor: Completely collateral-free and guarantor-free.\n   - Credit Guarantee: 75% coverage by Government of India through NCGTC for loans up to Rs. 7.5 lakh.\n   - Interest Subvention: 3% subvention during the moratorium period (course duration + 1 year) for loans up to Rs. 10 lakh.\n\n3. Application Portal:\n   - Applications for eligible domestic institutions must be submitted via the unified portal at https://pmvidyalaxmi.co.in using the Common Education Loan Application Form (CELAF).\n\nSince study abroad programs fall outside the mandate of PM-Vidyalaxmi and PM-USP CSIS, you will need to explore general bank education loan schemes (commercial education loans for foreign studies) provided by Indian public or private sector banks.",
+      "confidence": 1.0,
+      "follow_up": "Would you like information on top domestic Indian medical institutions (QHEIs) covered under PM-Vidyalaxmi, or guidance on general commercial loan requirements for studying abroad?"
     }
   },
   {
     "id": 7,
     "question": "How is the moratorium period defined for education loan repayment?",
     "v1": {
-      "answer": "The moratorium period (repayment holiday) is defined as the Course Duration plus 1 year. During this entire period, students are not required to pay principal EMIs. The government provides 100% interest subsidy for income <= Rs. 4.5 lakh (CSIS) or 3% interest subvention for income <= Rs. 8 lakh at a QHEI (PM-Vidyalaxmi).",
-      "confidence": 0.96,
-      "follow_up": "Repayment of the loan begins after the moratorium ends, with a tenure of up to 15 years."
+      "answer": "Under Indian government education loan guidelines (including IBA Model Loan standards, PM-Vidyalaxmi, and PM-USP CSIS), the moratorium period is defined as the total course duration plus 1 year, or 6 months after securing employment, whichever occurs earlier. Repayment of the loan principal begins after this moratorium period ends.",
+      "confidence": 1.0,
+      "follow_up": "Would you like to know how interest subvention or subsidy works during the moratorium period under PM-Vidyalaxmi or PM-USP CSIS?"
     },
     "v2": {
-      "answer": "The moratorium period (repayment holiday) is defined as the Course Duration plus 1 year. During this entire period, students are not required to pay principal EMIs. The government provides 100% interest subsidy for income <= Rs. 4.5 lakh (CSIS) or 3% interest subvention for income <= Rs. 8 lakh at a QHEI (PM-Vidyalaxmi).",
-      "confidence": 0.96,
-      "follow_up": "Repayment of the loan begins after the moratorium ends, with a tenure of up to 15 years."
+      "answer": "Executive Summary:\nUnder Indian government education loan frameworks (including PM-Vidyalaxmi and PM-USP CSIS), the moratorium period is defined as the total duration of the enrolled course plus 1 year, or 6 months after securing employment, whichever occurs earlier. During this holiday period, students are not required to pay back the principal loan amount.\n\nStructured Breakdown:\n\n1. Definition & Duration:\n- Moratorium Period: Course Duration + 1 Year (or 6 months post-employment, whichever is earlier).\n- Repayment Tenure: Up to 15 years starting after the moratorium period ends.\n\n2. Financial Benefits During Moratorium:\n- PM-USP CSIS: 100% full interest subsidy paid by the Central Government during the moratorium period for EWS students with annual family income up to Rs. 4.5 lakh.\n- PM-Vidyalaxmi: 3% interest subvention during the moratorium period for education loans up to Rs. 10 lakh for students with annual family income up to Rs. 8 lakh enrolled in eligible Quality Higher Education Institutions (QHEIs).\n- Credit Guarantee: 75% credit guarantee coverage for loans up to Rs. 7.5 lakh provided through NCGTC.\n\n3. Eligibility & Scope:\n- Income Ceiling: Up to Rs. 4.5 lakh (for 100% CSIS subsidy) or up to Rs. 8 lakh (for 3% PM-Vidyalaxmi subvention).\n- Scope: Applicable strictly to approved professional/technical courses and QHEIs within India. (Domestic studies only; foreign university programs are not covered).\n\n4. Application Workflow:\n- Students can apply online through the unified PM-Vidyalaxmi digital portal at https://pmvidyalaxmi.co.in using the Common Education Loan Application Form (CELAF). Prior bank accounts with the lending bank are not required to apply.",
+      "confidence": 1.0,
+      "follow_up": "Would you like help checking whether your institute is listed as an eligible QHEI under PM-Vidyalaxmi or calculating your scheme eligibility based on your annual family income?"
     }
   },
   {
     "id": 8,
     "question": "Is collateral or third-party guarantee required for loans up to Rs. 7.5 lakh?",
     "v1": {
-      "answer": "Under PM-Vidyalaxmi and CGFSEL, the Government of India provides a 75% credit guarantee for education loans up to Rs. 7.5 lakh. This allows students to secure loans completely collateral-free and without any third-party guarantor.",
-      "confidence": 0.98,
-      "follow_up": "Would you like guidance on which member banks offer this collateral-free facility?"
+      "answer": "No, collateral or a third-party guarantee is not required for education loans up to Rs. 7.5 lakh under the PM-Vidyalaxmi scheme and Credit Guarantee Fund Scheme for Education Loans (CGFSEL). The Government of India provides 75% credit guarantee coverage through NCGTC to lending banks for loans up to Rs. 7.5 lakh, ensuring fully collateral-free and guarantor-free access for eligible students.",
+      "confidence": 1.0,
+      "follow_up": "Would you like guidance on applying through the unified portal at https://pmvidyalaxmi.co.in using the Common Education Loan Application Form (CELAF)?"
     },
     "v2": {
-      "answer": "Under PM-Vidyalaxmi and CGFSEL, the Government of India provides a 75% credit guarantee for education loans up to Rs. 7.5 lakh. This allows students to secure loans completely collateral-free and without any third-party guarantor.",
-      "confidence": 0.98,
-      "follow_up": "Would you like guidance on which member banks offer this collateral-free facility?"
+      "answer": "Executive Summary: No, collateral or third-party guarantee is NOT required for education loans up to Rs. 7.5 lakh under government education loan guidelines and schemes like PM-Vidyalaxmi. These loans are completely collateral-free and guarantor-free, backed by a 75% credit guarantee coverage provided by the Government of India through NCGTC.\n\nStructured Breakdown:\n\n1. Eligibility Checklist:\n- Income Ceiling: Family income up to Rs. 8 lakh per annum (for PM-Vidyalaxmi 3% interest subvention) or up to Rs. 4.5 lakh per annum (for PM-USP CSIS 100% interest subsidy).\n- Approved Course Type: Professional, technical, or higher education degree/diploma courses.\n- Institution Criteria: Eligible Quality Higher Education Institutions (QHEIs) in India specified under NIRF/central institution rankings.\n\n2. Financial Benefits:\n- Collateral & Guarantee: Zero collateral or third-party guarantor needed up to Rs. 7.5 lakh (75% credit guarantee via NCGTC).\n- Moratorium Terms: Course duration + 1 year (or 6 months after securing employment, whichever is earlier).\n- Interest Subvention: 3% subvention on loans up to Rs. 10 lakh for family income up to Rs. 8 lakh under PM-Vidyalaxmi; 100% interest subsidy for family income up to Rs. 4.5 lakh under PM-USP CSIS.\n\n3. Portal Application Steps:\n- Visit the unified digital portal at https://pmvidyalaxmi.co.in.\n- Register and complete the Common Education Loan Application Form (CELAF).\n- Select eligible QHEI and choice of banks, submit required financial/academic documents online.\n\nNote: These features and credit guarantee coverage apply exclusively to domestic studies at approved Indian institutions and do not cover foreign universities.",
+      "confidence": 1.0,
+      "follow_up": "Would you like help checking if your institute is listed under the QHEI eligible list for PM-Vidyalaxmi, or would you like details on the document checklist needed for your CELAF application?"
     }
   },
   {
     "id": 9,
     "question": "Is it mandatory to have an existing bank account to apply on the portal?",
     "v1": {
-      "answer": "No, an existing bank account at the selected bank is not required to submit an application on the PM-Vidyalaxmi portal. Once the education loan is sanctioned, the bank will open a savings account for disbursement and eventual repayment.",
-      "confidence": 0.95,
-      "follow_up": "You can apply to up to three preferred member banks simultaneously through the single portal form."
+      "answer": "No, it is not mandatory to have an existing bank account with the lending bank to apply for an education loan on the portal. Students can submit their application without a prior relationship with the bank. However, once the loan is approved/sanctioned, a bank account will be opened in the student's name for loan disbursement.",
+      "confidence": 1.0,
+      "follow_up": "Would you like to know the steps to apply using the Common Education Loan Application Form (CELAF) on the PM-Vidyalaxmi portal (https://pmvidyalaxmi.co.in)?"
     },
     "v2": {
-      "answer": "No, an existing bank account at the selected bank is not required to submit an application on the PM-Vidyalaxmi portal. Once the education loan is sanctioned, the bank will open a savings account for disbursement and eventual repayment.",
-      "confidence": 0.95,
-      "follow_up": "You can apply to up to three preferred member banks simultaneously through the single portal form."
+      "answer": "Executive Summary:\nNo, it is not mandatory to have an existing bank account with the selected lending bank to apply for an education loan on the official portal. You can register and submit your application using the Common Education Loan Application Form (CELAF). A savings bank account will be opened with the lending bank upon loan sanction for disbursement purposes.\n\nStructured Breakdown:\n\n1. Eligibility Checklist:\n- Income Ceiling: Family income up to Rs. 8 lakh per annum for PM-Vidyalaxmi 3% interest subvention; up to Rs. 4.5 lakh per annum for PM-USP CSIS 100% interest subsidy.\n- Approved Courses: Technical, professional, and higher education degree/diploma courses.\n- Eligible Institutions: Top Quality Higher Education Institutions (QHEIs) as per NIRF rankings / central institutions in India (domestic studies only).\n\n2. Financial Benefits:\n- Interest Subvention: 3% subvention during moratorium for loans up to Rs. 10 lakh (PM-Vidyalaxmi) or 100% interest subsidy (CSIS).\n- Moratorium Period: Course duration plus 1 year (or 6 months after securing employment, whichever is earlier).\n- Credit Guarantee & Collateral: Completely collateral-free and guarantor-free. 75% credit guarantee coverage for loans up to Rs. 7.5 lakh via NCGTC.\n\n3. Portal Application Steps:\n- Step 1: Visit https://pmvidyalaxmi.co.in.\n- Step 2: Register with your basic details (Mobile & Email).\n- Step 3: Complete the Common Education Loan Application Form (CELAF) with academic, personal, and income information.\n- Step 4: Choose the bank and scheme of your preference and submit. If approved, the bank will assist you in opening the required account for disbursement.",
+      "confidence": 1.0,
+      "follow_up": "Would you like assistance in checking whether your chosen institution is on the eligible QHEI list or determining your exact interest subsidy eligibility?"
     }
   },
   {
     "id": 10,
     "question": "Which loan I should apply for less than 5 lakh income?",
     "v1": {
-      "answer": "For family income below Rs. 5 lakh, if your income is up to Rs. 4.5 lakh you qualify for PM-USP CSIS (100% interest subsidy). If your income is between Rs. 4.5 lakh and Rs. 5 lakh, you qualify for PM-Vidyalaxmi 3% interest subvention (income up to Rs. 8 lakh).",
-      "confidence": 0.94,
-      "follow_up": "Check your income certificate to determine if you qualify for full or 3% interest subvention."
+      "answer": "For an annual family income of less than Rs. 5 lakh (specifically up to Rs. 4.5 lakh), you are eligible for the PM-USP CSIS (Central Sector Interest Subsidy) scheme, which provides a full (100%) interest subsidy during the moratorium period (course duration + 1 year) on loans up to Rs. 10 lakh for approved professional/technical courses in India. Additionally, if your income is up to Rs. 8 lakh, you can apply under the PM-Vidyalaxmi scheme for collateral-free, guarantor-free education loans at eligible Quality Higher Education Institutions (QHEIs), featuring a 75% credit guarantee for loans up to Rs. 7.5 lakh and a 3% interest subvention on loans up to Rs. 10 lakh during the moratorium period.",
+      "confidence": 0.95,
+      "follow_up": "Check if your prospective institution is an eligible QHEI and apply online via the unified PM-Vidyalaxmi portal at https://pmvidyalaxmi.co.in using the Common Education Loan Application Form (CELAF)."
     },
     "v2": {
       "answer": "For a family income under Rs. 5 lakh, here is the best scheme pathway:\n1. If income is <= Rs. 4.5 lakh: Apply for PM-USP CSIS to get 100% full interest subsidy on loans up to Rs. 10 lakh during the moratorium.\n2. If income is between Rs. 4.5 lakh and Rs. 5 lakh: Apply for PM-Vidyalaxmi (income ceiling up to Rs. 8 lakh) to get a 3% interest subvention during the moratorium at eligible QHEIs.\nBoth schemes provide collateral-free loans backed by government credit guarantees.",
