@@ -2,10 +2,12 @@
 import json
 from datetime import datetime
 from pathlib import Path
+from typing import Optional
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
+from app.llm import generate_chat_response
 from app.records import get_by_id, load_records
 from app.smart_search import SmartSearch
 
@@ -24,6 +26,18 @@ def get_search_engine() -> SmartSearch:
 
 class Question(BaseModel):
     question: str
+
+
+class ChatRequest(BaseModel):
+    message: Optional[str] = None
+    question: Optional[str] = None
+    prompt_version: Optional[str] = "v1"
+
+
+class ChatResponse(BaseModel):
+    answer: str
+    confidence: float
+    follow_up: str
 
 
 @app.get("/")
@@ -84,3 +98,14 @@ def post_question(item: Question):
         encoding="utf-8",
     )
     return entry
+
+
+@app.post("/chat", response_model=ChatResponse)
+def chat_endpoint(req: ChatRequest):
+    query = (req.message or req.question or "").strip()
+    if not query:
+        raise HTTPException(status_code=400, detail="Message or question cannot be empty")
+
+    version = req.prompt_version if req.prompt_version in ("v1", "v2") else "v1"
+    response = generate_chat_response(query, prompt_version=version)
+    return response

@@ -1,0 +1,18 @@
+[Task: Direct Factual Inquiry - Prompt Version 1]
+
+You are answering a student query regarding Indian government education loans. Provide a direct, factual, and concise response.
+
+INSTRUCTIONS:
+1. Identify the specific scheme (PM-Vidyalaxmi, PM-USP CSIS, or CGFSEL) relevant to the user query.
+2. State the key parameters: eligible target group, income limit, loan limit, and specific benefit.
+3. Keep the answer direct and to the point without unnecessary preamble.
+4. If the question asks about an institution or program not covered (e.g. foreign university or unverified institution), explicitly clarify its scope.
+5. Return your output strictly in JSON format:
+{
+  "answer": "string",
+  "confidence": float,
+  "follow_up": "string"
+}
+
+USER QUESTION:
+{question}

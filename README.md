@@ -17,17 +17,19 @@
 
 - **Document Fetching & Ingestion Pipeline:** Automated downloader (`app/fetch.py`) and PDF/HTML parser (`app/ingest.py`) extracting structured scheme rules into `data/records.json`.
 - **Smart Search (TF-IDF + Cosine Similarity):** Relevance-ranked keyword and semantic similarity search across loan criteria, benefits, and scheme rules (`app/smart_search.py`).
-- **RESTful FastAPI Service:** Endpoints for health checks, record retrieval, TF-IDF smart search, and logging user queries (`app/main.py`).
+- **RESTful FastAPI Service:** Endpoints for health checks, record retrieval, TF-IDF smart search, user questions, and AI chat (`app/main.py`).
+- **LLM Provider Wrapper (Groq / Gemini):** Universal LLM client with system prompt grounding, JSON output parsing, and resilient fallback (`app/llm.py`).
+- **Prompt Engineering & Systematic Evaluation:** Dual prompt versions (Direct Factual vs Comprehensive Advisory) evaluated across 10 real user questions (`eval/prompt_compare.md`).
 - **Exploratory Data Analysis:** Fast pandas-based dataset profiling computing distribution across schemes, categories, and income limits (`analysis/explore.py`).
 - **Interactive CLI & Exploration:** Command-line interface for searching and inspecting scheme records (`app/cli.py`).
-- **Checkpoint 1 Documentation:** Explanation of LLM fundamentals, RAG architecture flowchart, and 10 representative user questions (`docs/how_llms_work.md`).
 
 ---
 
 ## Technologies
 
-- **Backend & API:** Python 3.11+, FastAPI, Uvicorn, Pydantic
-- **Data & Text Processing:** Pandas, Scikit-learn (TF-IDF), PyPDF, BeautifulSoup4, Requests
+- **Backend & API:** Python 3.11+, FastAPI, Uvicorn, Pydantic, Python-dotenv
+- **LLMs & Prompt Engineering:** Groq (Llama-3.3-70B), Google Gemini (Gemini 1.5 Flash), Requests
+- **Data & Text Processing:** Pandas, Scikit-learn (TF-IDF), PyPDF, BeautifulSoup4
 - **Data Models:** Python dataclasses (`app/models.py`)
 
 ---
@@ -42,7 +44,8 @@
 │   ├── explore.py             # Mirror for exploratory analysis
 │   ├── fetch.py               # Fetches official government PDFs & HTML FAQs
 │   ├── ingest.py              # Parses raw documents into structured Record dataclasses
-│   ├── main.py                # FastAPI REST service (/health, /records, /search, /questions)
+│   ├── llm.py                 # Day 6: Groq/Gemini provider wrapper + JSON parser
+│   ├── main.py                # FastAPI REST service (/health, /records, /search, /chat, etc.)
 │   ├── models.py              # Record dataclass definition
 │   ├── records.py             # Data loading, search, and lookup functions
 │   └── smart_search.py        # TF-IDF vectorizer + Cosine similarity search engine
@@ -51,11 +54,18 @@
 │   │   ├── csis_guidelines.pdf
 │   │   ├── pm_vidyalaxmi_faq.html
 │   │   └── pm_vidyalaxmi_guidelines.pdf
-│   ├── questions.json         # User questions submitted via POST /questions
+│   ├── questions.json         # 10 real VidyaLoan user questions
 │   ├── records.json           # Ingested scheme records (59 structured entries)
 │   └── sample_records.py      # Baseline seed records
 ├── docs/
-│   └── how_llms_work.md       # How LLMs work, diagram, 10 user questions, Checkpoint 1
+│   └── how_llms_work.md       # Day 5: How LLMs work, diagram, 10 user questions, Checkpoint 1
+├── eval/
+│   └── prompt_compare.md      # Day 6: Comparison of Prompt v1 vs Prompt v2 across 10 questions
+├── prompts/
+│   ├── system_prompt.txt      # Core VidyaLoan system prompt & constraints
+│   ├── task_prompt_v1.txt     # Task prompt version 1: Direct & rule-centric
+│   └── task_prompt_v2.txt     # Task prompt version 2: Comprehensive student advisory
+├── .env.example               # Template for LLM API keys (.env is not committed)
 ├── day01_intro.py             # Day 1 project card demonstration
 ├── requirements.txt           # Project dependencies
 └── README.md                  # Project documentation & instructions
@@ -70,25 +80,32 @@
 pip install -r requirements.txt
 ```
 
-### 2. Fetch Government Documents (Day 3)
+### 2. Configure Environment (Optional for Live LLMs)
+Copy `.env.example` to `.env` and insert your Gemini or Groq API key:
+```bash
+cp .env.example .env
+```
+*(If no API key is provided, `app/llm.py` automatically uses its deterministic grounded fallback engine for offline testing and evaluation).*
+
+### 3. Fetch Government Documents (Day 3)
 Downloads official PM-Vidyalaxmi guidelines, PM-USP CSIS guidelines, and portal FAQs with timeouts and SSL handling:
 ```bash
 python -m app.fetch
 ```
 
-### 3. Ingest Documents into Structured Records (Day 3)
+### 4. Ingest Documents into Structured Records (Day 3)
 Extracts and normalizes scheme records into `data/records.json`:
 ```bash
 python -m app.ingest
 ```
 
-### 4. Run Exploratory Analysis (Day 4)
+### 5. Run Exploratory Analysis (Day 4)
 Prints 3 key dataset facts using Pandas:
 ```bash
 python analysis/explore.py
 ```
 
-### 5. Launch FastAPI Service (Day 4 & Checkpoint 1)
+### 6. Launch FastAPI Service (Day 4, 5 & 6)
 Start the REST API server:
 ```bash
 uvicorn app.main:app --reload --port 8000
@@ -117,11 +134,10 @@ Open interactive Swagger documentation in your browser at:
   ```bash
   curl -X POST http://127.0.0.1:8000/questions -H "Content-Type: application/json" -d "{\"question\": \"Can I get loan for diploma?\"}"
   ```
-
-### 6. Interactive Command-Line Tool
-```bash
-python -m app.cli
-```
+- `POST /chat` (Day 6): AI loan consultation returning structured JSON with answer, confidence, and follow-up.
+  ```bash
+  curl -X POST http://127.0.0.1:8000/chat -H "Content-Type: application/json" -d "{\"message\": \"Which loan I should apply for less than 5 lakh income?\", \"prompt_version\": \"v2\"}"
+  ```
 
 ---
 
