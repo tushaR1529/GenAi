@@ -17,7 +17,10 @@
 
 - **Document Fetching & Ingestion Pipeline:** Automated downloader (`app/fetch.py`) and PDF/HTML parser (`app/ingest.py`) extracting structured scheme rules into `data/records.json`.
 - **Smart Search (TF-IDF + Cosine Similarity):** Relevance-ranked keyword and semantic similarity search across loan criteria, benefits, and scheme rules (`app/smart_search.py`).
-- **RESTful FastAPI Service:** Endpoints for health checks, record retrieval, TF-IDF smart search, user questions, and AI chat (`app/main.py`).
+- **RESTful FastAPI Service:** Endpoints for health checks, record retrieval, TF-IDF smart search, semantic vector search, user questions, and AI chat (`app/main.py`).
+- **Document Chunking & Embeddings (Day 7):** Boundary-aware chunking preserving source, page, and title metadata (`app/chunking.py`) with ONNX-accelerated MiniLM embedding wrapper (`app/embed.py`).
+- **Persistent Chroma Vectorstore (Day 7):** Persistent Chroma collection indexing document chunks with metadata filtering and similarity search (`app/vectorstore.py`).
+- **Semantic Search Endpoint (`GET /search/semantic`):** High-speed semantic search retrieving grounded context with similarity scores (`app/main.py`).
 - **LLM Provider Wrapper (Groq / Gemini):** Universal LLM client with system prompt grounding, JSON output parsing, and resilient fallback (`app/llm.py`).
 - **Prompt Engineering & Systematic Evaluation:** Dual prompt versions (Direct Factual vs Comprehensive Advisory) evaluated across 10 real user questions (`eval/prompt_compare.md`).
 - **Exploratory Data Analysis:** Fast pandas-based dataset profiling computing distribution across schemes, categories, and income limits (`analysis/explore.py`).
@@ -40,16 +43,20 @@
 ├── analysis/
 │   └── explore.py             # Prints 3 key facts about records using Pandas
 ├── app/
+│   ├── chunking.py            # Day 7: Document chunker preserving source, page, title
 │   ├── cli.py                 # Command-line interface for browsing records
+│   ├── embed.py               # Day 7: Embedding wrapper using all-MiniLM-L6-v2 ONNX
 │   ├── explore.py             # Mirror for exploratory analysis
 │   ├── fetch.py               # Fetches official government PDFs & HTML FAQs
 │   ├── ingest.py              # Parses raw documents into structured Record dataclasses
 │   ├── llm.py                 # Day 6: Groq/Gemini provider wrapper + JSON parser
-│   ├── main.py                # FastAPI REST service (/health, /records, /search, /chat, etc.)
+│   ├── main.py                # FastAPI REST service (/health, /records, /search, /search/semantic, /chat)
 │   ├── models.py              # Record dataclass definition
 │   ├── records.py             # Data loading, search, and lookup functions
-│   └── smart_search.py        # TF-IDF vectorizer + Cosine similarity search engine
+│   ├── smart_search.py        # TF-IDF vectorizer + Cosine similarity search engine
+│   └── vectorstore.py         # Day 7: Persistent Chroma collection indexer & searcher
 ├── data/
+│   ├── chroma_db/             # Day 7: Persistent Chroma database
 │   ├── raw/                   # Downloaded government guidelines and FAQs
 │   │   ├── csis_guidelines.pdf
 │   │   ├── pm_vidyalaxmi_faq.html
@@ -60,7 +67,9 @@
 ├── docs/
 │   └── how_llms_work.md       # Day 5: How LLMs work, diagram, 10 user questions, Checkpoint 1
 ├── eval/
-│   └── prompt_compare.md      # Day 6: Comparison of Prompt v1 vs Prompt v2 across 10 questions
+│   ├── prompt_compare.md      # Day 6: Comparison of Prompt v1 vs Prompt v2 across 10 questions
+│   ├── results.json           # Day 6: Benchmark evaluation outputs
+│   └── search_results.md      # Day 7: Semantic search hits report across 10 benchmark questions
 ├── prompts/
 │   ├── system_prompt.txt      # Core VidyaLoan system prompt & constraints
 │   ├── task_prompt_v1.txt     # Task prompt version 1: Direct & rule-centric
@@ -129,6 +138,10 @@ Open interactive Swagger documentation in your browser at:
 - `GET /search?q={query}`: Searches records using TF-IDF and Cosine similarity.
   ```bash
   curl "http://127.0.0.1:8000/search?q=interest+subvention"
+  ```
+- `GET /search/semantic?q={query}&limit=5` (Day 7): High-speed semantic search over indexed document chunks using persistent Chroma vectorstore.
+  ```bash
+  curl "http://127.0.0.1:8000/search/semantic?q=credit+guarantee+limit&limit=3"
   ```
 - `POST /questions`: Saves a user question into `data/questions.json`.
   ```bash

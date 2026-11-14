@@ -10,6 +10,7 @@ from pydantic import BaseModel
 from app.llm import generate_chat_response
 from app.records import get_by_id, load_records
 from app.smart_search import SmartSearch
+from app.vectorstore import get_vectorstore
 
 app = FastAPI(
     title="VidyaLoan API",
@@ -71,6 +72,20 @@ def search(q: str, top_k: int = 5):
     engine = get_search_engine()
     results = engine.search(q, top_k=top_k)
     return {"query": q, "results": results}
+
+
+@app.get("/search/semantic")
+def search_semantic(q: str, limit: int = 5):
+    query = (q or "").strip()
+    if not query:
+        raise HTTPException(status_code=400, detail="Query parameter 'q' cannot be empty")
+    vs = get_vectorstore()
+    results = vs.search(query, n_results=limit)
+    return {
+        "query": query,
+        "total_hits": len(results),
+        "results": results,
+    }
 
 
 @app.post("/questions")

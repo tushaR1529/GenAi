@@ -18,6 +18,10 @@ ENV/
 htmlcov/
 .ruff_cache/
 
+# Local Vector Database & Chroma caches
+data/chroma_db/
+chroma_db/
+
 # OS specific files
 .DS_Store
 Thumbs.db
