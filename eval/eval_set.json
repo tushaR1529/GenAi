@@ -1,0 +1,172 @@
+[
+  {
+    "id": 1,
+    "question": "Can I get loan to get admission in Sanjivani University?",
+    "category": "Eligibility & Institutions",
+    "expected_answer": "Yes, education loans under the IBA Model Scheme can be availed for Sanjivani University. For PM-Vidyalaxmi benefits (3% interest subvention and 75% credit guarantee), the university must qualify as an eligible Quality Higher Education Institution (QHEI) based on NIRF rankings.",
+    "expected_sources": [
+      "pm_vidyalaxmi_guidelines.pdf",
+      "pm_vidyalaxmi_faq.html"
+    ],
+    "key_terms": ["sanjivani", "qhei", "nirf"],
+    "is_out_of_scope": false
+  },
+  {
+    "id": 2,
+    "question": "Can I get loan for diploma?",
+    "category": "Course Eligibility",
+    "expected_answer": "Yes, diploma programs qualify for education loans. Under PM-Vidyalaxmi, approved diploma programs in eligible QHEIs qualify. Under PM-USP CSIS, professional/technical diploma courses recognized by AICTE or State Technical Boards qualify for 100% interest subsidy for families with income up to Rs. 4.5 lakh.",
+    "expected_sources": [
+      "csis_guidelines.pdf",
+      "pm_vidyalaxmi_guidelines.pdf"
+    ],
+    "key_terms": ["diploma", "aicte", "technical"],
+    "is_out_of_scope": false
+  },
+  {
+    "id": 3,
+    "question": "What is the income limit for 3% interest subvention under PM-Vidyalaxmi?",
+    "category": "Financial Benefits",
+    "expected_answer": "Under PM-Vidyalaxmi, students with an annual gross family income up to Rs. 8 lakh are eligible for a 3% interest subvention on education loans up to Rs. 10 lakh during the moratorium period, capped at 1 lakh students per year.",
+    "expected_sources": [
+      "pm_vidyalaxmi_guidelines.pdf"
+    ],
+    "key_terms": ["8 lakh", "3%", "10 lakh"],
+    "is_out_of_scope": false
+  },
+  {
+    "id": 4,
+    "question": "What is the maximum loan limit covered by the 75% credit guarantee?",
+    "category": "Credit Guarantee",
+    "expected_answer": "Under PM-Vidyalaxmi and CGFSEL, the Government of India provides a 75% credit guarantee through NCGTC for education loans up to Rs. 7.5 lakh, making them collateral-free and guarantor-free.",
+    "expected_sources": [
+      "pm_vidyalaxmi_guidelines.pdf",
+      "pm_vidyalaxmi_faq.html"
+    ],
+    "key_terms": ["7.5 lakh", "75%", "ncgtc"],
+    "is_out_of_scope": false
+  },
+  {
+    "id": 5,
+    "question": "What documents need to be uploaded on the PM-Vidyalaxmi portal?",
+    "category": "Application & Documents",
+    "expected_answer": "Mandatory documents to upload on the portal are: Class X marksheet, Class XII/qualifying examination marksheet, official admission proof from the QHEI, course fee schedule/expenses, income certificate issued by a competent authority, and Aadhaar card.",
+    "expected_sources": [
+      "pm_vidyalaxmi_faq.html"
+    ],
+    "key_terms": ["marksheet", "admission", "income certificate", "aadhaar"],
+    "is_out_of_scope": false
+  },
+  {
+    "id": 6,
+    "question": "Can I get a loan to study medicine at Oxford University in the UK under PM-Vidyalaxmi?",
+    "category": "Out-of-Scope (Foreign Studies)",
+    "expected_answer": "I don't know. The PM-Vidyalaxmi scheme only covers domestic higher education at eligible Quality Higher Education Institutions (QHEIs) in India and does not cover foreign studies or universities abroad such as Oxford University in the UK.",
+    "expected_sources": [],
+    "key_terms": ["i don't know", "domestic", "india"],
+    "is_out_of_scope": true
+  },
+  {
+    "id": 7,
+    "question": "How is the moratorium period defined for education loan repayment?",
+    "category": "Repayment & Moratorium",
+    "expected_answer": "The moratorium period is defined as the Course Duration plus 1 year. During this repayment holiday, students are not required to repay principal EMIs, and applicable interest subsidies or subventions apply.",
+    "expected_sources": [
+      "pm_vidyalaxmi_guidelines.pdf",
+      "csis_guidelines.pdf"
+    ],
+    "key_terms": ["course duration plus 1 year", "moratorium"],
+    "is_out_of_scope": false
+  },
+  {
+    "id": 8,
+    "question": "Is collateral or third-party guarantee required for loans up to Rs. 7.5 lakh?",
+    "category": "Collateral & Guarantees",
+    "expected_answer": "No, education loans up to Rs. 7.5 lakh require no collateral security and no third-party guarantee due to the 75% credit guarantee backed by the Government of India.",
+    "expected_sources": [
+      "pm_vidyalaxmi_guidelines.pdf",
+      "pm_vidyalaxmi_faq.html"
+    ],
+    "key_terms": ["no collateral", "7.5 lakh", "no third-party"],
+    "is_out_of_scope": false
+  },
+  {
+    "id": 9,
+    "question": "Is it mandatory to have an existing bank account to apply on the portal?",
+    "category": "Application Process",
+    "expected_answer": "No, an existing bank account with the chosen bank is not required to apply on the PM-Vidyalaxmi portal. If the loan is approved, the bank opens a loan/savings account for disbursement.",
+    "expected_sources": [
+      "pm_vidyalaxmi_faq.html"
+    ],
+    "key_terms": ["not mandatory", "not required", "disbursement"],
+    "is_out_of_scope": false
+  },
+  {
+    "id": 10,
+    "question": "Which loan I should apply for less than 5 lakh income?",
+    "category": "Scheme Recommendation",
+    "expected_answer": "If family income is up to Rs. 4.5 lakh, apply for PM-USP CSIS to receive 100% full interest subsidy during the moratorium period. If income is between Rs. 4.5 lakh and Rs. 5 lakh, apply for PM-Vidyalaxmi (income ceiling up to Rs. 8 lakh) for a 3% interest subvention at eligible QHEIs.",
+    "expected_sources": [
+      "pm_vidyalaxmi_guidelines.pdf",
+      "csis_guidelines.pdf"
+    ],
+    "key_terms": ["4.5 lakh", "csis", "vidyalaxmi"],
+    "is_out_of_scope": false
+  },
+  {
+    "id": 11,
+    "question": "How many students can receive the 3% interest subvention each year under PM-Vidyalaxmi?",
+    "category": "Scheme Limits & Quota",
+    "expected_answer": "Under PM-Vidyalaxmi, the 3% interest subvention is capped at 1,00,000 (1 lakh) meritorious students per year, with preference given to students from government institutions and technical/professional courses.",
+    "expected_sources": [
+      "pm_vidyalaxmi_guidelines.pdf"
+    ],
+    "key_terms": ["1 lakh", "1,00,000", "students"],
+    "is_out_of_scope": false
+  },
+  {
+    "id": 12,
+    "question": "What is the annual family income ceiling to qualify for 100% interest subsidy under PM-USP CSIS?",
+    "category": "CSIS Eligibility",
+    "expected_answer": "Under the PM-USP Central Sector Interest Subsidy (CSIS) scheme, the annual gross parental/family income limit is up to Rs. 4.5 lakh from all sources.",
+    "expected_sources": [
+      "csis_guidelines.pdf"
+    ],
+    "key_terms": ["4.5 lakh", "4.50 lakh"],
+    "is_out_of_scope": false
+  },
+  {
+    "id": 13,
+    "question": "What is the maximum loan repayment period after the moratorium under PM-Vidyalaxmi?",
+    "category": "Repayment Terms",
+    "expected_answer": "Under PM-Vidyalaxmi and IBA guidelines, the maximum repayment tenure is up to 15 years after the completion of the moratorium period.",
+    "expected_sources": [
+      "pm_vidyalaxmi_guidelines.pdf"
+    ],
+    "key_terms": ["15 years"],
+    "is_out_of_scope": false
+  },
+  {
+    "id": 14,
+    "question": "Is Aadhaar authentication mandatory for registration on the PM-Vidyalaxmi portal?",
+    "category": "Portal Registration",
+    "expected_answer": "Yes, Aadhaar verification/authentication is mandatory for student registration on the PM-Vidyalaxmi portal to ensure transparent, unique identity verification.",
+    "expected_sources": [
+      "pm_vidyalaxmi_guidelines.pdf",
+      "pm_vidyalaxmi_faq.html"
+    ],
+    "key_terms": ["aadhaar", "mandatory"],
+    "is_out_of_scope": false
+  },
+  {
+    "id": 15,
+    "question": "Can a student receive both PM-USP CSIS and PM-Vidyalaxmi interest subventions simultaneously?",
+    "category": "Subvention Rules",
+    "expected_answer": "No, a student cannot combine or double-dip subsidies. Students already availing interest subsidy under PM-USP CSIS or any other Central/State Government scheme are not eligible for the 3% interest subvention under PM-Vidyalaxmi.",
+    "expected_sources": [
+      "pm_vidyalaxmi_guidelines.pdf"
+    ],
+    "key_terms": ["not eligible", "cannot", "other central"],
+    "is_out_of_scope": false
+  }
+]

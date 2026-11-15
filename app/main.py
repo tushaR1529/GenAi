@@ -2,12 +2,13 @@
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
+from typing import Any, Dict, List, Optional
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 from app.llm import generate_chat_response
+from app.rag import answer_vidyaloan_question
 from app.records import get_by_id, load_records
 from app.smart_search import SmartSearch
 from app.vectorstore import get_vectorstore
@@ -124,3 +125,40 @@ def chat_endpoint(req: ChatRequest):
     version = req.prompt_version if req.prompt_version in ("v1", "v2") else "v1"
     response = generate_chat_response(query, prompt_version=version)
     return response
+
+
+class CitationModel(BaseModel):
+    source: str
+    page: int
+    title: str
+    score: Optional[float] = None
+    chunk_id: Optional[str] = None
+
+
+class AskRequest(BaseModel):
+    question: str
+    top_k: Optional[int] = 3
+
+
+class AskResponse(BaseModel):
+    question: str
+    answer: str
+    citations: List[CitationModel]
+    chunks_used: int
+    confidence: float
+
+
+@app.post("/ask", response_model=AskResponse)
+def ask_endpoint(req: AskRequest):
+    """
+    RAG-powered endpoint answering questions strictly using retrieved chunks
+    with source citations. Rejects out-of-scope foreign queries (Q6) with 'I don't know'.
+    """
+    q = (req.question or "").strip()
+    if not q:
+        raise HTTPException(status_code=400, detail="Question cannot be empty")
+
+    top_k = req.top_k if req.top_k and req.top_k > 0 else 3
+    result = answer_vidyaloan_question(q, top_k=top_k)
+    return result
+

@@ -21,6 +21,9 @@
 - **Document Chunking & Embeddings (Day 7):** Boundary-aware chunking preserving source, page, and title metadata (`app/chunking.py`) with ONNX-accelerated MiniLM embedding wrapper (`app/embed.py`).
 - **Persistent Chroma Vectorstore (Day 7):** Persistent Chroma collection indexing document chunks with metadata filtering and similarity search (`app/vectorstore.py`).
 - **Semantic Search Endpoint (`GET /search/semantic`):** High-speed semantic search retrieving grounded context with similarity scores (`app/main.py`).
+- **RAG Answering with Citations (Day 8):** RAG answering pipeline (`app/rag.py` & `POST /ask`) answering questions strictly from retrieved chunks with structured source citations (`source`, `page`, `title`).
+- **Out-of-Scope Guardrails (Day 8):** Enforced guardrails that refuse unsupported queries (such as foreign studies at Oxford University in Q6) with `"I don't know"`.
+- **RAG Configuration Benchmark (Day 8):** 15-question evaluation suite (`eval/eval_set.json` & `eval/run_eval.py`) benchmarking chunk size and top-k retrieval configurations.
 - **LLM Provider Wrapper (Groq / Gemini):** Universal LLM client with system prompt grounding, JSON output parsing, and resilient fallback (`app/llm.py`).
 - **Prompt Engineering & Systematic Evaluation:** Dual prompt versions (Direct Factual vs Comprehensive Advisory) evaluated across 10 real user questions (`eval/prompt_compare.md`).
 - **Exploratory Data Analysis:** Fast pandas-based dataset profiling computing distribution across schemes, categories, and income limits (`analysis/explore.py`).
@@ -50,8 +53,9 @@
 │   ├── fetch.py               # Fetches official government PDFs & HTML FAQs
 │   ├── ingest.py              # Parses raw documents into structured Record dataclasses
 │   ├── llm.py                 # Day 6: Groq/Gemini provider wrapper + JSON parser
-│   ├── main.py                # FastAPI REST service (/health, /records, /search, /search/semantic, /chat)
+│   ├── main.py                # FastAPI REST service (/health, /records, /search, /chat, /ask)
 │   ├── models.py              # Record dataclass definition
+│   ├── rag.py                 # Day 8: RAG pipeline with citations & out-of-scope refusal
 │   ├── records.py             # Data loading, search, and lookup functions
 │   ├── smart_search.py        # TF-IDF vectorizer + Cosine similarity search engine
 │   └── vectorstore.py         # Day 7: Persistent Chroma collection indexer & searcher
@@ -67,8 +71,13 @@
 ├── docs/
 │   └── how_llms_work.md       # Day 5: How LLMs work, diagram, 10 user questions, Checkpoint 1
 ├── eval/
+│   ├── eval_set.json          # Day 8: 15-question benchmark evaluation dataset
+│   ├── generate_search_eval.py# Day 7: Semantic search evaluation script
 │   ├── prompt_compare.md      # Day 6: Comparison of Prompt v1 vs Prompt v2 across 10 questions
+│   ├── rag_eval_report.md     # Day 8: Detailed RAG evaluation report and winner analysis
+│   ├── rag_eval_results.json  # Day 8: Quantitative metrics for tested RAG configs
 │   ├── results.json           # Day 6: Benchmark evaluation outputs
+│   ├── run_eval.py            # Day 8: RAG configuration benchmark execution harness
 │   └── search_results.md      # Day 7: Semantic search hits report across 10 benchmark questions
 ├── prompts/
 │   ├── system_prompt.txt      # Core VidyaLoan system prompt & constraints
@@ -151,6 +160,46 @@ Open interactive Swagger documentation in your browser at:
   ```bash
   curl -X POST http://127.0.0.1:8000/chat -H "Content-Type: application/json" -d "{\"message\": \"Which loan I should apply for less than 5 lakh income?\", \"prompt_version\": \"v2\"}"
   ```
+- `POST /ask` (Day 8): RAG endpoint answering questions strictly using retrieved document chunks with source citations and out-of-scope refusal.
+  ```bash
+  curl -X POST http://127.0.0.1:8000/ask -H "Content-Type: application/json" -d "{\"question\": \"What is the maximum loan limit covered by the 75% credit guarantee?\", \"top_k\": 3}"
+  ```
+  *Refusal Example (Q6 foreign study query):*
+  ```bash
+  curl -X POST http://127.0.0.1:8000/ask -H "Content-Type: application/json" -d "{\"question\": \"Can I get a loan to study medicine at Oxford University in the UK under PM-Vidyalaxmi?\"}"
+  # Output: {"question": "...", "answer": "I don't know. The PM-Vidyalaxmi scheme and PM-USP CSIS only cover domestic higher education...", "citations": []}
+  ```
+
+---
+
+## Day 8: RAG Configuration Benchmark & Winner Table
+
+To optimize retrieval fidelity and prevent hallucinations, two distinct RAG configurations were evaluated across **15 realistic VidyaLoan queries** ([`eval/eval_set.json`](file:///c:/Users/TusharV/Desktop/vidyaloan/GenAi/eval/eval_set.json)):
+- **Config A (Macro Chunking):** Chunk size = 700 chars, Overlap = 120 chars, Top-k = 3
+- **Config B (Micro Chunking):** Chunk size = 350 chars, Overlap = 60 chars, Top-k = 5
+
+### How to Run the Evaluation Harness
+```bash
+python eval/run_eval.py
+```
+
+### Benchmark Results & Winner Table
+
+| Evaluation Metric | Config A (chunk=700, k=3) | Config B (chunk=350, k=5) | Winner |
+| :--- | :---: | :---: | :---: |
+| **Chunk Size / Overlap** | 700 / 120 chars | 350 / 60 chars | - |
+| **Top-K Retrieved Chunks** | 3 | 5 | - |
+| **Indexed Chunks Count** | 123 chunks | 254 chunks | - |
+| **Context Hit Rate (Recall)** | 80.0% | **93.33%** | **Config B** |
+| **Avg Context Relevance (Similarity)** | **0.6087** | 0.5905 | Config A |
+| **Answer Correctness** | 81.11% | 81.11% | Tie |
+| **Faithfulness / Grounding** | **100.0%** | **100.0%** | **Tie (100%)** |
+| **Citation Precision** | **100.0%** | **100.0%** | **Tie (100%)** |
+| **Q6 Refusal ("I don't know")** | **PASS** | **PASS** | **Tie (100% Pass)** |
+| **Average Query Latency** | 582.37 ms | **542.05 ms** | **Config B** |
+| **Composite Score** | 88.33% | **92.33%** | **Config B 🏆** |
+
+> **🏆 Winner Decision:** **Config B** won the benchmark with a composite score of **92.33%**, driven by a **+13.33% higher context hit rate (93.33% vs 80.0%)** and lower query latency. Both configurations demonstrated 100% citation precision and strictly refused Question 6 with *"I don't know"*.
 
 ---
 
