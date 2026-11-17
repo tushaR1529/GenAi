@@ -24,6 +24,10 @@
 - **RAG Answering with Citations (Day 8):** RAG answering pipeline (`app/rag.py` & `POST /ask`) answering questions strictly from retrieved chunks with structured source citations (`source`, `page`, `title`).
 - **Out-of-Scope Guardrails (Day 8):** Enforced guardrails that refuse unsupported queries (such as foreign studies at Oxford University in Q6) with `"I don't know"`.
 - **RAG Configuration Benchmark (Day 8):** 15-question evaluation suite (`eval/eval_set.json` & `eval/run_eval.py`) benchmarking chunk size and top-k retrieval configurations.
+- **Education Loan Cost Calculator Tool (Day 9):** Accurate financial calculation tool (`app/tools.py`) computing moratorium interest (course + 1 year), government subsidy/subvention share (100% via CSIS if income <= Rs. 4.5L, 3% points via PM-Vidyalaxmi if income <= Rs. 8L at QHEIs), post-moratorium monthly EMI, and 75% credit guarantee eligibility.
+- **Autonomous Agent Loop (Day 9):** Hand-written ReAct agent (`app/agent_loop.py`) that autonomously routes student inquiries between RAG knowledge retrieval and the financial calculation tool.
+- **LangGraph Stateful Agent with Memory & Human Approval (Day 9):** LangGraph workflow (`app/graph.py`) powered by `StateGraph` and `MemorySaver` checkpointer with an interactive approval gate requiring confirmation for high-value financial calculations.
+- **Agent REST Service (`POST /agent`):** Full multi-turn conversational agent endpoint with approval resumption support (`app/main.py`).
 - **LLM Provider Wrapper (Groq / Gemini):** Universal LLM client with system prompt grounding, JSON output parsing, and resilient fallback (`app/llm.py`).
 - **Prompt Engineering & Systematic Evaluation:** Dual prompt versions (Direct Factual vs Comprehensive Advisory) evaluated across 10 real user questions (`eval/prompt_compare.md`).
 - **Exploratory Data Analysis:** Fast pandas-based dataset profiling computing distribution across schemes, categories, and income limits (`analysis/explore.py`).
@@ -34,6 +38,7 @@
 ## Technologies
 
 - **Backend & API:** Python 3.11+, FastAPI, Uvicorn, Pydantic, Python-dotenv
+- **Agent Workflows & Memory:** LangGraph (`StateGraph`), LangChain-Core, `MemorySaver` checkpointer
 - **LLMs & Prompt Engineering:** Groq (Llama-3.3-70B), Google Gemini (Gemini 1.5 Flash), Requests
 - **Data & Text Processing:** Pandas, Scikit-learn (TF-IDF), PyPDF, BeautifulSoup4
 - **Data Models:** Python dataclasses (`app/models.py`)
@@ -46,18 +51,21 @@
 ├── analysis/
 │   └── explore.py             # Prints 3 key facts about records using Pandas
 ├── app/
+│   ├── agent_loop.py          # Day 9: Hand-written ReAct agent loop
 │   ├── chunking.py            # Day 7: Document chunker preserving source, page, title
 │   ├── cli.py                 # Command-line interface for browsing records
 │   ├── embed.py               # Day 7: Embedding wrapper using all-MiniLM-L6-v2 ONNX
 │   ├── explore.py             # Mirror for exploratory analysis
 │   ├── fetch.py               # Fetches official government PDFs & HTML FAQs
+│   ├── graph.py               # Day 9: LangGraph stateful agent with memory & human approval
 │   ├── ingest.py              # Parses raw documents into structured Record dataclasses
 │   ├── llm.py                 # Day 6: Groq/Gemini provider wrapper + JSON parser
-│   ├── main.py                # FastAPI REST service (/health, /records, /search, /chat, /ask)
+│   ├── main.py                # FastAPI REST service (/health, /records, /search, /chat, /ask, /agent)
 │   ├── models.py              # Record dataclass definition
 │   ├── rag.py                 # Day 8: RAG pipeline with citations & out-of-scope refusal
 │   ├── records.py             # Data loading, search, and lookup functions
 │   ├── smart_search.py        # TF-IDF vectorizer + Cosine similarity search engine
+│   ├── tools.py               # Day 9: Loan cost calculator & RAG search tools
 │   └── vectorstore.py         # Day 7: Persistent Chroma collection indexer & searcher
 ├── data/
 │   ├── chroma_db/             # Day 7: Persistent Chroma database
@@ -78,7 +86,8 @@
 │   ├── rag_eval_results.json  # Day 8: Quantitative metrics for tested RAG configs
 │   ├── results.json           # Day 6: Benchmark evaluation outputs
 │   ├── run_eval.py            # Day 8: RAG configuration benchmark execution harness
-│   └── search_results.md      # Day 7: Semantic search hits report across 10 benchmark questions
+│   ├── search_results.md      # Day 7: Semantic search hits report across 10 benchmark questions
+│   └── test_agent_day9.py     # Day 9: Comprehensive automated test suite for agent tools & LangGraph
 ├── prompts/
 │   ├── system_prompt.txt      # Core VidyaLoan system prompt & constraints
 │   ├── task_prompt_v1.txt     # Task prompt version 1: Direct & rule-centric
@@ -168,6 +177,18 @@ Open interactive Swagger documentation in your browser at:
   ```bash
   curl -X POST http://127.0.0.1:8000/ask -H "Content-Type: application/json" -d "{\"question\": \"Can I get a loan to study medicine at Oxford University in the UK under PM-Vidyalaxmi?\"}"
   # Output: {"question": "...", "answer": "I don't know. The PM-Vidyalaxmi scheme and PM-USP CSIS only cover domestic higher education...", "citations": []}
+  ```
+- `POST /agent` (Day 9): LangGraph-powered AI Agent with conversation memory (`MemorySaver`) and interactive human approval gate.
+  ```bash
+  # Step 1: Submit high-value calculation query (triggers approval gate)
+  curl -X POST http://127.0.0.1:8000/agent -H "Content-Type: application/json" \
+    -d "{\"message\": \"Calculate 8 lakh loan at 9.5% for 4 year B.Tech, family income 4 lakh\", \"session_id\": \"sess_1\"}"
+  # Returns: {"status": "awaiting_approval", "needs_approval": true, "response": "CONFIRMATION REQUIRED: ..."}
+
+  # Step 2: Grant approval using the same session_id
+  curl -X POST http://127.0.0.1:8000/agent -H "Content-Type: application/json" \
+    -d "{\"session_id\": \"sess_1\", \"approve\": true}"
+  # Returns: {"status": "completed", "needs_approval": false, "response": "### Verified Education Loan Calculation ..."}
   ```
 
 ---

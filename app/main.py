@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
+from app.graph import get_graph_service
 from app.llm import generate_chat_response
 from app.rag import answer_vidyaloan_question
 from app.records import get_by_id, load_records
@@ -160,5 +161,36 @@ def ask_endpoint(req: AskRequest):
 
     top_k = req.top_k if req.top_k and req.top_k > 0 else 3
     result = answer_vidyaloan_question(q, top_k=top_k)
+    return result
+
+
+class AgentRequest(BaseModel):
+    message: Optional[str] = ""
+    session_id: Optional[str] = "default_session"
+    approve: Optional[bool] = None
+
+
+class AgentResponse(BaseModel):
+    session_id: str
+    status: str
+    response: str
+    tool_called: Optional[str] = None
+    tool_result: Optional[Dict[str, Any]] = None
+    needs_approval: bool
+
+
+@app.post("/agent", response_model=AgentResponse)
+def agent_endpoint(req: AgentRequest):
+    """
+    LangGraph-powered AI Agent with conversation memory and approval step.
+    Can perform grounded RAG search and loan financial calculations.
+    """
+    msg = req.message or ""
+    if not msg.strip() and req.approve is None:
+        raise HTTPException(status_code=400, detail="Either 'message' or 'approve' must be provided")
+
+    service = get_graph_service()
+    session_id = req.session_id or "default_session"
+    result = service.process_message(msg, session_id=session_id, approve=req.approve)
     return result
 
