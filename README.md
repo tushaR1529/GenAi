@@ -28,6 +28,7 @@
 - **Autonomous Agent Loop (Day 9):** Hand-written ReAct agent (`app/agent_loop.py`) that autonomously routes student inquiries between RAG knowledge retrieval and the financial calculation tool.
 - **LangGraph Stateful Agent with Memory & Human Approval (Day 9):** LangGraph workflow (`app/graph.py`) powered by `StateGraph` and `MemorySaver` checkpointer with an interactive approval gate requiring confirmation for high-value financial calculations.
 - **Agent REST Service (`POST /agent`):** Full multi-turn conversational agent endpoint with approval resumption support (`app/main.py`).
+- **Interactive Streamlit Web UI (Day 10 - Checkpoint 2):** Full-featured web application (`ui/app.py`) featuring conversational RAG chat, verified citations, user thumbs up/down feedback logging, and an interactive **Loan Cost Breakdown Stacked Bar Chart** visualizing government subsidies vs family financial commitments.
 - **LLM Provider Wrapper (Groq / Gemini):** Universal LLM client with system prompt grounding, JSON output parsing, and resilient fallback (`app/llm.py`).
 - **Prompt Engineering & Systematic Evaluation:** Dual prompt versions (Direct Factual vs Comprehensive Advisory) evaluated across 10 real user questions (`eval/prompt_compare.md`).
 - **Exploratory Data Analysis:** Fast pandas-based dataset profiling computing distribution across schemes, categories, and income limits (`analysis/explore.py`).
@@ -77,6 +78,7 @@
 │   ├── records.json           # Ingested scheme records (59 structured entries)
 │   └── sample_records.py      # Baseline seed records
 ├── docs/
+│   ├── checkpoint2_demo.png   # Day 10: Streamlit UI live demo screenshot (Checkpoint 2)
 │   └── how_llms_work.md       # Day 5: How LLMs work, diagram, 10 user questions, Checkpoint 1
 ├── eval/
 │   ├── eval_set.json          # Day 8: 15-question benchmark evaluation dataset
@@ -92,6 +94,8 @@
 │   ├── system_prompt.txt      # Core VidyaLoan system prompt & constraints
 │   ├── task_prompt_v1.txt     # Task prompt version 1: Direct & rule-centric
 │   └── task_prompt_v2.txt     # Task prompt version 2: Comprehensive student advisory
+├── ui/
+│   └── app.py                 # Day 10: Streamlit Chat UI, Stacked Bar Chart & Feedback
 ├── .env.example               # Template for LLM API keys (.env is not committed)
 ├── day01_intro.py             # Day 1 project card demonstration
 ├── requirements.txt           # Project dependencies
@@ -190,6 +194,39 @@ Open interactive Swagger documentation in your browser at:
     -d "{\"session_id\": \"sess_1\", \"approve\": true}"
   # Returns: {"status": "completed", "needs_approval": false, "response": "### Verified Education Loan Calculation ..."}
   ```
+
+### 7. Launch Streamlit Web Application (Day 10 - Checkpoint 2)
+Start the interactive Streamlit chat interface and financial visualization dashboard:
+```bash
+streamlit run ui/app.py
+```
+Open **[http://localhost:8501](http://localhost:8501)** in your web browser.
+
+---
+
+## Checkpoint 2: Streamlit Live Demo & Signature Feature
+
+The VidyaLoan Streamlit interface delivers a complete conversational advisory environment paired with our **Signature Feature: The Loan Cost Breakdown Stacked Bar Visualizer**.
+
+![VidyaLoan Checkpoint 2 Live Demo](docs/checkpoint2_demo.png)
+
+### Key Capabilities Demonstrated in Checkpoint 2:
+1. **Interactive Loan Cost Breakdown Stacked Bar Chart:**
+   - **Real-Time Dynamic Recalculation:** Adjust loan amount, annual family income, interest rate, course duration, and NIRF QHEI status via sidebar sliders.
+   - **Component Breakdown:** Accurately splits financial obligations into:
+     - 🔵 **Principal Loan Amount** (Base borrowing)
+     - 🟢 **Government Subsidy Share** (100% full interest covered via **PM-USP CSIS** for income $\le$ ₹4.5L; 3% interest subvention via **PM-Vidyalaxmi** for income $\le$ ₹8L at QHEIs)
+     - 🔴 **Moratorium Interest (Family Share)** (Net interest accrued during course + 1 year)
+     - 🟠 **Repayment Tenure Interest** (Post-moratorium monthly EMI interest)
+   - **Scenario Comparison:** Compares total out-of-pocket costs **"Without Government Scheme"** vs. **"With VidyaLoan Scheme"**, visually highlighting thousands of rupees saved by the family.
+2. **Conversational RAG & Multi-Turn Chat:**
+   - Communicates with the LangGraph agent (`/agent`) and citations RAG endpoint (`/ask`).
+   - Surfaces verified government policy citations (source document and page number).
+3. **Thumbs Up / Thumbs Down Feedback System:**
+   - Dedicated feedback buttons below every assistant response.
+   - Logs user sentiment, queries, and timestamps directly into [`data/feedback.json`](file:///c:/Users/TusharV/Desktop/vidyaloan/GenAi/data/feedback.json).
+4. **Human-in-the-Loop Approval Gate:**
+   - When users request high-value financial calculations, the agent displays an interactive approval banner with **"Approve Calculation"** and **"Decline"** buttons, resuming state seamlessly upon user confirmation.
 
 ---
 
