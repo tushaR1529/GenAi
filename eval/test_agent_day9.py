@@ -14,8 +14,8 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 from fastapi.testclient import TestClient
+
 from app.agent_loop import VidyaLoanAgent
-from app.graph import get_graph_service
 from app.main import app
 from app.tools import education_loan_cost_calculator
 

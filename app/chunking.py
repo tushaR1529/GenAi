@@ -6,7 +6,7 @@ Chunks PDF and HTML documents while preserving source, page, and title metadata.
 import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from bs4 import BeautifulSoup
 from pypdf import PdfReader
@@ -20,7 +20,7 @@ class DocumentChunk:
     page: int
     title: str
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return asdict(self)
 
 
@@ -28,7 +28,7 @@ def split_text_into_chunks(
     text: str,
     chunk_size: int = 700,
     overlap: int = 120,
-) -> List[str]:
+) -> list[str]:
     """Split text into overlapping windows respecting paragraph and sentence boundaries."""
     text = re.sub(r"\s+", " ", text).strip()
     if not text:
@@ -36,7 +36,7 @@ def split_text_into_chunks(
     if len(text) <= chunk_size:
         return [text]
 
-    chunks: List[str] = []
+    chunks: list[str] = []
     start = 0
     while start < len(text):
         end = start + chunk_size
@@ -63,16 +63,16 @@ def split_text_into_chunks(
 
 def extract_chunks_from_pdf(
     pdf_path: Path,
-    title: Optional[str] = None,
+    title: str | None = None,
     chunk_size: int = 700,
     overlap: int = 120,
-) -> List[DocumentChunk]:
+) -> list[DocumentChunk]:
     """Extract page-by-page text from a PDF file and chunk it preserving page metadata."""
     if not pdf_path.exists():
         return []
 
     doc_title = title or pdf_path.stem.replace("_", " ").title()
-    chunks: List[DocumentChunk] = []
+    chunks: list[DocumentChunk] = []
     reader = PdfReader(str(pdf_path))
 
     for page_idx, page in enumerate(reader.pages):
@@ -100,10 +100,10 @@ def extract_chunks_from_pdf(
 
 def extract_chunks_from_html(
     html_path: Path,
-    title: Optional[str] = None,
+    title: str | None = None,
     chunk_size: int = 700,
     overlap: int = 120,
-) -> List[DocumentChunk]:
+) -> list[DocumentChunk]:
     """Extract text from an HTML document (e.g. FAQ) and chunk preserving metadata."""
     if not html_path.exists():
         return []
@@ -117,7 +117,7 @@ def extract_chunks_from_html(
 
     # Find question/answer pairs or headings
     qa_blocks = soup.find_all(["div", "section", "p", "li", "h2", "h3"])
-    extracted_texts: List[str] = []
+    extracted_texts: list[str] = []
     for el in qa_blocks:
         t = el.get_text(separator=" ", strip=True)
         if len(t) > 30 and t not in extracted_texts:
@@ -128,7 +128,7 @@ def extract_chunks_from_html(
         combined_text = soup.get_text(separator=" ", strip=True)
 
     text_chunks = split_text_into_chunks(combined_text, chunk_size=chunk_size, overlap=overlap)
-    chunks: List[DocumentChunk] = []
+    chunks: list[DocumentChunk] = []
     for chunk_idx, chunk_text in enumerate(text_chunks):
         chunk_id = f"{html_path.stem}_p1_c{chunk_idx+1}"
         chunks.append(
@@ -145,13 +145,13 @@ def extract_chunks_from_html(
 
 
 def chunk_all_documents(
-    raw_dir: Optional[Path] = None,
+    raw_dir: Path | None = None,
     chunk_size: int = 700,
     overlap: int = 120,
-) -> List[DocumentChunk]:
+) -> list[DocumentChunk]:
     """Chunk all VidyaLoan documents in data/raw."""
     base_dir = raw_dir or Path(__file__).resolve().parent.parent / "data" / "raw"
-    all_chunks: List[DocumentChunk] = []
+    all_chunks: list[DocumentChunk] = []
 
     # Map of known files to friendly titles
     title_map = {

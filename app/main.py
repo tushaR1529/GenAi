@@ -2,7 +2,7 @@
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
@@ -32,9 +32,9 @@ class Question(BaseModel):
 
 
 class ChatRequest(BaseModel):
-    message: Optional[str] = None
-    question: Optional[str] = None
-    prompt_version: Optional[str] = "v1"
+    message: str | None = None
+    question: str | None = None
+    prompt_version: str | None = "v1"
 
 
 class ChatResponse(BaseModel):
@@ -132,19 +132,19 @@ class CitationModel(BaseModel):
     source: str
     page: int
     title: str
-    score: Optional[float] = None
-    chunk_id: Optional[str] = None
+    score: float | None = None
+    chunk_id: str | None = None
 
 
 class AskRequest(BaseModel):
     question: str
-    top_k: Optional[int] = 3
+    top_k: int | None = 3
 
 
 class AskResponse(BaseModel):
     question: str
     answer: str
-    citations: List[CitationModel]
+    citations: list[CitationModel]
     chunks_used: int
     confidence: float
 
@@ -165,17 +165,17 @@ def ask_endpoint(req: AskRequest):
 
 
 class AgentRequest(BaseModel):
-    message: Optional[str] = ""
-    session_id: Optional[str] = "default_session"
-    approve: Optional[bool] = None
+    message: str | None = ""
+    session_id: str | None = "default_session"
+    approve: bool | None = None
 
 
 class AgentResponse(BaseModel):
     session_id: str
     status: str
     response: str
-    tool_called: Optional[str] = None
-    tool_result: Optional[Dict[str, Any]] = None
+    tool_called: str | None = None
+    tool_result: dict[str, Any] | None = None
     needs_approval: bool
 
 

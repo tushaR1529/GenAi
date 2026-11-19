@@ -1,14 +1,14 @@
 # app/records.py
 import json
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from data.sample_records import SAMPLE_RECORDS
 
 RECORDS_FILE = Path("data/records.json")
 
 
-def load_records() -> List[Dict[str, Any]]:
+def load_records() -> list[dict[str, Any]]:
     """Load all records from data/records.json if available, else fallback to SAMPLE_RECORDS."""
     if RECORDS_FILE.exists():
         try:
@@ -20,7 +20,7 @@ def load_records() -> List[Dict[str, Any]]:
     return SAMPLE_RECORDS.copy()
 
 
-def search(keyword: str) -> List[Dict[str, Any]]:
+def search(keyword: str) -> list[dict[str, Any]]:
     """Search records using a keyword."""
     records = load_records()
     keyword = keyword.strip().lower()
@@ -36,17 +36,17 @@ def search(keyword: str) -> List[Dict[str, Any]]:
     return results
 
 
-def count_by(field: str) -> Dict[str, int]:
+def count_by(field: str) -> dict[str, int]:
     """Count records according to a selected field."""
     records = load_records()
-    counts: Dict[str, int] = {}
+    counts: dict[str, int] = {}
     for record in records:
         category = record.get(field, "Unknown")
         counts[category] = counts.get(category, 0) + 1
     return counts
 
 
-def get_by_id(record_id: int) -> Optional[Dict[str, Any]]:
+def get_by_id(record_id: int) -> dict[str, Any] | None:
     """Find a record using its unique ID."""
     records = load_records()
     for record in records:

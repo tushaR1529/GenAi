@@ -8,11 +8,10 @@ Evaluates Context Hit Rate, Answer Correctness, Faithfulness, Citation Precision
 Q6 Out-of-Scope refusal ('I don't know'), and Latency.
 """
 import json
-import os
 import sys
 import time
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 if str(ROOT_DIR) not in sys.path:
@@ -28,10 +27,10 @@ REPORT_MD_PATH = ROOT_DIR / "eval" / "rag_eval_report.md"
 
 
 def evaluate_question(
-    row: Dict[str, Any],
+    row: dict[str, Any],
     rag: VidyaLoanRAG,
     top_k: int,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Run RAG pipeline for a single question and compute evaluation metrics."""
     qid = row["id"]
     question = row["question"]
@@ -116,12 +115,12 @@ def run_configuration_eval(
     overlap: int,
     top_k: int,
     collection_name: str,
-    eval_set: List[Dict[str, Any]],
-) -> Dict[str, Any]:
+    eval_set: list[dict[str, Any]],
+) -> dict[str, Any]:
     """Index collection with given chunk parameters and evaluate across benchmark set."""
-    print(f"\n========================================================")
+    print("\n========================================================")
     print(f"Setting up {config_name}: chunk_size={chunk_size}, overlap={overlap}, top_k={top_k}")
-    print(f"========================================================")
+    print("========================================================")
 
     # 1. Chunk documents
     raw_dir = ROOT_DIR / "data" / "raw"
@@ -140,7 +139,7 @@ def run_configuration_eval(
     rag = VidyaLoanRAG(vectorstore=vs)
 
     # 3. Evaluate each question
-    results: List[Dict[str, Any]] = []
+    results: list[dict[str, Any]] = []
     for row in eval_set:
         print(f"Evaluating Q{row['id']}: {row['question'][:50]}...")
         eval_item = evaluate_question(row, rag, top_k=top_k)
@@ -214,11 +213,9 @@ def main():
     # Determine Winner
     if res_a["composite_score"] >= res_b["composite_score"]:
         winner = res_a
-        runner_up = res_b
         winner_tag = "Config A"
     else:
         winner = res_b
-        runner_up = res_a
         winner_tag = "Config B"
 
     # Save JSON results

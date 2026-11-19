@@ -1,5 +1,6 @@
 # app/fetch.py
 from pathlib import Path
+
 import requests
 import urllib3
 

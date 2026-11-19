@@ -3,9 +3,8 @@
 Persistent Chroma vectorstore module for VidyaLoan document chunks.
 Supports chunk indexing, similarity search, and metadata retrieval.
 """
-import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import chromadb
 from chromadb.utils import embedding_functions
@@ -21,7 +20,7 @@ class VidyaLoanVectorStore:
 
     def __init__(
         self,
-        persist_dir: Optional[Path] = None,
+        persist_dir: Path | None = None,
         collection_name: str = DEFAULT_COLLECTION_NAME,
     ):
         self.persist_dir = persist_dir or DEFAULT_PERSIST_DIR
@@ -44,7 +43,7 @@ class VidyaLoanVectorStore:
 
     def index_chunks(
         self,
-        chunks: List[DocumentChunk],
+        chunks: list[DocumentChunk],
         batch_size: int = 50,
         overwrite: bool = False,
     ) -> int:
@@ -64,9 +63,9 @@ class VidyaLoanVectorStore:
                 metadata={"hnsw:space": "cosine"},
             )
 
-        ids: List[str] = []
-        documents: List[str] = []
-        metadatas: List[Dict[str, Any]] = []
+        ids: list[str] = []
+        documents: list[str] = []
+        metadatas: list[dict[str, Any]] = []
 
         for c in chunks:
             ids.append(c.id)
@@ -93,8 +92,8 @@ class VidyaLoanVectorStore:
         self,
         query: str,
         n_results: int = 5,
-        where: Optional[Dict[str, Any]] = None,
-    ) -> List[Dict[str, Any]]:
+        where: dict[str, Any] | None = None,
+    ) -> list[dict[str, Any]]:
         """Query the vectorstore for semantically similar chunks."""
         if not query.strip():
             return []
@@ -104,7 +103,7 @@ class VidyaLoanVectorStore:
             return []
 
         limit = min(n_results, current_count)
-        kwargs: Dict[str, Any] = {
+        kwargs: dict[str, Any] = {
             "query_texts": [query],
             "n_results": limit,
         }
@@ -113,7 +112,7 @@ class VidyaLoanVectorStore:
 
         res = self.collection.query(**kwargs)
 
-        hits: List[Dict[str, Any]] = []
+        hits: list[dict[str, Any]] = []
         if not res or not res.get("ids") or not res["ids"][0]:
             return hits
 
@@ -140,7 +139,7 @@ class VidyaLoanVectorStore:
 
 
 # Global singleton instance
-_vectorstore_instance: Optional[VidyaLoanVectorStore] = None
+_vectorstore_instance: VidyaLoanVectorStore | None = None
 
 
 def get_vectorstore(auto_index: bool = True) -> VidyaLoanVectorStore:

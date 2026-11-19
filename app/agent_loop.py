@@ -5,12 +5,11 @@ Can autonomously determine when to call:
 1. vidyaloan_rag_search (for policy, criteria, documents, portal procedures)
 2. education_loan_cost_calculator (for loan estimates, moratorium interest, subsidies, and EMI)
 """
-import json
 import re
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from app.llm import LLMClient
-from app.tools import AVAILABLE_TOOLS, education_loan_cost_calculator, execute_tool, vidyaloan_rag_search
+from app.tools import education_loan_cost_calculator, vidyaloan_rag_search
 
 AGENT_SYSTEM_PROMPT = """You are VidyaLoan AI Agent, an autonomous loan advisor for Indian students and parents.
 You have access to two tools:
@@ -42,11 +41,11 @@ If no tool is needed or you are presenting the final synthesized response, respo
 class VidyaLoanAgent:
     """Hand-written ReAct agent loop supporting multi-step tool execution and fallback."""
 
-    def __init__(self, llm_client: Optional[LLMClient] = None, max_iterations: int = 3):
+    def __init__(self, llm_client: LLMClient | None = None, max_iterations: int = 3):
         self.llm = llm_client or LLMClient()
         self.max_iterations = max_iterations
 
-    def _extract_calculator_params(self, text: str) -> Optional[Dict[str, Any]]:
+    def _extract_calculator_params(self, text: str) -> dict[str, Any] | None:
         """Heuristic parser to extract calculator parameters from user text."""
         t = text.lower()
         amount = None
@@ -99,13 +98,13 @@ class VidyaLoanAgent:
             }
         return None
 
-    def run(self, user_query: str) -> Dict[str, Any]:
+    def run(self, user_query: str) -> dict[str, Any]:
         """Execute agent loop for a user query."""
-        trace: List[Dict[str, Any]] = []
+        trace: list[dict[str, Any]] = []
         current_query = user_query.strip()
         final_answer = ""
         follow_up = ""
-        tool_results: Dict[str, Any] = {}
+        tool_results: dict[str, Any] = {}
 
         # 1. Check if direct financial calculation is requested
         calc_params = self._extract_calculator_params(current_query)
@@ -177,7 +176,7 @@ class VidyaLoanAgent:
         }
 
 
-def run_agent(query: str) -> Dict[str, Any]:
+def run_agent(query: str) -> dict[str, Any]:
     """Convenience function to run the hand-written agent loop."""
     agent = VidyaLoanAgent()
     return agent.run(query)

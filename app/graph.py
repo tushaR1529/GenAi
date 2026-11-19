@@ -5,25 +5,25 @@ LangGraph implementation of the VidyaLoan AI Agent with:
 2. In-memory checkpointer (MemorySaver) for session conversation state
 3. Human-in-the-loop approval step for loan calculation commitments
 """
-from typing import Any, Dict, List, Optional, TypedDict
+from typing import Any, TypedDict
 
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, START, StateGraph
 
 from app.agent_loop import VidyaLoanAgent
-from app.tools import education_loan_cost_calculator, execute_tool, vidyaloan_rag_search
+from app.tools import execute_tool
 
 
 class AgentGraphState(TypedDict):
     """State schema for the VidyaLoan LangGraph agent."""
     session_id: str
-    messages: List[Dict[str, str]]
+    messages: list[dict[str, str]]
     current_input: str
-    tool_to_call: Optional[str]
-    tool_args: Optional[Dict[str, Any]]
-    tool_output: Optional[Dict[str, Any]]
+    tool_to_call: str | None
+    tool_args: dict[str, Any] | None
+    tool_output: dict[str, Any] | None
     requires_approval: bool
-    approved: Optional[bool]
+    approved: bool | None
     final_output: str
     status: str  # "completed", "awaiting_approval", "action_rejected"
 
@@ -32,7 +32,7 @@ class AgentGraphState(TypedDict):
 _extractor_agent = VidyaLoanAgent()
 
 
-def planner_node(state: AgentGraphState) -> Dict[str, Any]:
+def planner_node(state: AgentGraphState) -> dict[str, Any]:
     """Analyze input, decide which tool to call, and determine if human approval is needed."""
     user_query = state.get("current_input", "").strip()
     calc_params = _extractor_agent._extract_calculator_params(user_query)
@@ -67,7 +67,7 @@ def planner_node(state: AgentGraphState) -> Dict[str, Any]:
     }
 
 
-def approval_node(state: AgentGraphState) -> Dict[str, Any]:
+def approval_node(state: AgentGraphState) -> dict[str, Any]:
     """Human-in-the-loop approval gate for financial computations."""
     approved = state.get("approved")
     tool_args = state.get("tool_args") or {}
@@ -98,7 +98,7 @@ def approval_node(state: AgentGraphState) -> Dict[str, Any]:
     }
 
 
-def tool_execution_node(state: AgentGraphState) -> Dict[str, Any]:
+def tool_execution_node(state: AgentGraphState) -> dict[str, Any]:
     """Execute the chosen tool."""
     tool_name = state.get("tool_to_call")
     tool_args = state.get("tool_args") or {}
@@ -110,7 +110,7 @@ def tool_execution_node(state: AgentGraphState) -> Dict[str, Any]:
     return {"tool_output": output, "status": "tool_executed"}
 
 
-def rejection_node(state: AgentGraphState) -> Dict[str, Any]:
+def rejection_node(state: AgentGraphState) -> dict[str, Any]:
     """Handle rejected action state."""
     return {
         "status": "action_rejected",
@@ -121,7 +121,7 @@ def rejection_node(state: AgentGraphState) -> Dict[str, Any]:
     }
 
 
-def synthesizer_node(state: AgentGraphState) -> Dict[str, Any]:
+def synthesizer_node(state: AgentGraphState) -> dict[str, Any]:
     """Synthesize tool outputs into final structured response."""
     tool_name = state.get("tool_to_call")
     tool_out = state.get("tool_output") or {}
@@ -234,8 +234,8 @@ class LangGraphAgentService:
         self,
         message: str,
         session_id: str = "default_session",
-        approve: Optional[bool] = None,
-    ) -> Dict[str, Any]:
+        approve: bool | None = None,
+    ) -> dict[str, Any]:
         """Send message or approval status to the LangGraph agent."""
         config = {"configurable": {"thread_id": session_id}}
 
@@ -278,7 +278,7 @@ class LangGraphAgentService:
 
 
 # Singleton service
-_graph_service: Optional[LangGraphAgentService] = None
+_graph_service: LangGraphAgentService | None = None
 
 
 def get_graph_service() -> LangGraphAgentService:

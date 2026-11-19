@@ -1,12 +1,13 @@
 # app/smart_search.py
-from typing import Any, Dict, List
+from typing import Any
+
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 from app.records import load_records
 
 
-def record_text(record: Dict[str, Any]) -> str:
+def record_text(record: dict[str, Any]) -> str:
     """Combine key record fields into a single search text string."""
     fields = ("scheme_name", "who_is_eligible", "income_limit", "loan_limit", "benefit")
     return " ".join(str(record.get(f, "")) for f in fields if record.get(f) is not None)
@@ -22,7 +23,7 @@ class SmartSearch:
         else:
             self.matrix = None
 
-    def search(self, query: str, top_k: int = 5) -> List[Dict[str, Any]]:
+    def search(self, query: str, top_k: int = 5) -> list[dict[str, Any]]:
         """Rank records with TF-IDF vectorizer and cosine similarity."""
         query = query.strip()
         if not query or self.matrix is None or len(self.records) == 0:

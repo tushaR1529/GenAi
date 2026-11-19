@@ -29,6 +29,8 @@
 - **LangGraph Stateful Agent with Memory & Human Approval (Day 9):** LangGraph workflow (`app/graph.py`) powered by `StateGraph` and `MemorySaver` checkpointer with an interactive approval gate requiring confirmation for high-value financial calculations.
 - **Agent REST Service (`POST /agent`):** Full multi-turn conversational agent endpoint with approval resumption support (`app/main.py`).
 - **Interactive Streamlit Web UI (Day 10 - Checkpoint 2):** Full-featured web application (`ui/app.py`) featuring conversational RAG chat, verified citations, user thumbs up/down feedback logging, and an interactive **Loan Cost Breakdown Stacked Bar Chart** visualizing government subsidies vs family financial commitments.
+- **Automated Pytest Suite & Ruff Code Quality (Day 11):** 26-test hermetic test suite (`tests/`) verifying record loaders, TF-IDF and Chroma vector search, `/health`, `/ask` with a fake LLM, and `education_loan_cost_calculator`; `ruff check .` passes with 0 errors.
+- **Docker & Docker Compose Containerization (Day 11):** Production-ready `Dockerfile`, `.dockerignore`, and `docker-compose.yml` orchestrating the FastAPI backend and Streamlit UI in isolated networked containers with single-command startup.
 - **LLM Provider Wrapper (Groq / Gemini):** Universal LLM client with system prompt grounding, JSON output parsing, and resilient fallback (`app/llm.py`).
 - **Prompt Engineering & Systematic Evaluation:** Dual prompt versions (Direct Factual vs Comprehensive Advisory) evaluated across 10 real user questions (`eval/prompt_compare.md`).
 - **Exploratory Data Analysis:** Fast pandas-based dataset profiling computing distribution across schemes, categories, and income limits (`analysis/explore.py`).
@@ -94,10 +96,20 @@
 │   ├── system_prompt.txt      # Core VidyaLoan system prompt & constraints
 │   ├── task_prompt_v1.txt     # Task prompt version 1: Direct & rule-centric
 │   └── task_prompt_v2.txt     # Task prompt version 2: Comprehensive student advisory
+├── tests/                     # Day 11: 26 automated unit and integration tests
+│   ├── __init__.py
+│   ├── test_api.py            # /health, /records, /search/semantic, /ask with fake LLM, /agent
+│   ├── test_calculator.py     # Loan cost calculator agent tool (CSIS, PM-Vidyalaxmi, CGFSEL)
+│   ├── test_records.py        # Record loading, lookup, and keyword search
+│   └── test_search.py         # TF-IDF SmartSearch and Chroma semantic search
 ├── ui/
 │   └── app.py                 # Day 10: Streamlit Chat UI, Stacked Bar Chart & Feedback
+├── .dockerignore              # Day 11: Exclusions for Docker builds
 ├── .env.example               # Template for LLM API keys (.env is not committed)
 ├── day01_intro.py             # Day 1 project card demonstration
+├── Dockerfile                 # Day 11: Multi-service container image
+├── docker-compose.yml         # Day 11: Multi-container orchestration (API + UI)
+├── pyproject.toml             # Day 11: Ruff linter & Pytest test suite configuration
 ├── requirements.txt           # Project dependencies
 └── README.md                  # Project documentation & instructions
 ```
@@ -258,6 +270,66 @@ python eval/run_eval.py
 | **Composite Score** | 88.33% | **92.33%** | **Config B 🏆** |
 
 > **🏆 Winner Decision:** **Config B** won the benchmark with a composite score of **92.33%**, driven by a **+13.33% higher context hit rate (93.33% vs 80.0%)** and lower query latency. Both configurations demonstrated 100% citation precision and strictly refused Question 6 with *"I don't know"*.
+
+---
+
+## Run with Docker (Day 11)
+
+VidyaLoan is fully containerized using **Docker** and **Docker Compose**, enabling the complete multi-service stack (FastAPI backend + Streamlit frontend) to start with a single command.
+
+### Prerequisites
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) or Docker Engine (with Compose v2+) installed and running.
+
+### 1. Build and Start All Services
+From the project root directory, run:
+```bash
+docker compose up --build
+```
+Or start in the background (detached mode):
+```bash
+docker compose up -d --build
+```
+
+### 2. Access the Application
+Once the containers are up and healthy:
+- **Streamlit Web UI:** Open [http://localhost:8501](http://localhost:8501)
+- **FastAPI Backend Server:** Available at [http://localhost:8000](http://localhost:8000)
+- **Interactive Swagger Documentation:** Open [http://localhost:8000/docs](http://localhost:8000/docs)
+- **Health Check Endpoint:** [http://localhost:8000/health](http://localhost:8000/health)
+
+### 3. Docker Compose Service Architecture
+
+| Service | Container Name | Internal Port | Host Port | Description |
+| :--- | :--- | :---: | :---: | :--- |
+| **api** | `vidyaloan-api` | 8000 | 8000 | FastAPI REST service handling `/health`, `/records`, `/search/semantic`, `/ask` (RAG citations), and `/agent` (LangGraph) |
+| **ui** | `vidyaloan-ui` | 8501 | 8501 | Streamlit Chat UI with interactive **Loan Cost Breakdown Stacked Bar Chart** communicating with backend via `http://api:8000` |
+
+### 4. Stop Services
+```bash
+docker compose down
+```
+
+---
+
+## Automated Testing & Code Quality (Day 11)
+
+The test suite contains **26 automated pytest tests** covering record persistence, TF-IDF smart search, Chroma semantic search, FastAPI endpoints with a fake LLM, and the loan cost calculation tool.
+
+### Run Pytest Test Suite
+```bash
+pytest -v
+```
+All 26 tests run hermetically and offline using mocked/fake LLM responses:
+- `tests/test_records.py`: Record loading, lookup by ID, and keyword search (6 tests)
+- `tests/test_search.py`: TF-IDF cosine similarity search and Chroma vectorstore semantic search (4 tests)
+- `tests/test_calculator.py`: `education_loan_cost_calculator` validating CSIS 100% subsidy, PM-Vidyalaxmi 3% subvention, QHEI requirements, and 75% credit guarantee thresholds (6 tests)
+- `tests/test_api.py`: FastAPI endpoints `/health`, `/records`, `/records/{id}`, `/search/semantic`, `/ask` with a fake LLM and out-of-scope refusal guardrails, and `/agent` approval flows (10 tests)
+
+### Run Ruff Code Quality Linter
+```bash
+ruff check .
+```
+Validates zero warnings or lint errors across the entire codebase.
 
 ---
 

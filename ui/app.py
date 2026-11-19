@@ -14,7 +14,7 @@ import os
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import plotly.graph_objects as go
 import requests
@@ -33,7 +33,7 @@ API_BASE_URL = os.getenv("API_BASE_URL", "http://127.0.0.1:8000")
 FEEDBACK_FILE = ROOT_DIR / "data" / "feedback.json"
 
 
-def save_feedback(query: str, answer: str, rating: str, comment: Optional[str] = None):
+def save_feedback(query: str, answer: str, rating: str, comment: str | None = None):
     """Save user thumbs up/down feedback to data/feedback.json."""
     FEEDBACK_FILE.parent.mkdir(parents=True, exist_ok=True)
     records = []
@@ -53,7 +53,7 @@ def save_feedback(query: str, answer: str, rating: str, comment: Optional[str] =
     FEEDBACK_FILE.write_text(json.dumps(records, indent=2, ensure_ascii=False), encoding="utf-8")
 
 
-def call_backend_agent(message: str, session_id: str, approve: Optional[bool] = None) -> Dict[str, Any]:
+def call_backend_agent(message: str, session_id: str, approve: bool | None = None) -> dict[str, Any]:
     """Call POST /agent on FastAPI server with fallback to in-process LangGraph service."""
     try:
         url = f"{API_BASE_URL}/agent"
@@ -69,7 +69,7 @@ def call_backend_agent(message: str, session_id: str, approve: Optional[bool] = 
     return service.process_message(message, session_id=session_id, approve=approve)
 
 
-def build_stacked_cost_chart(calc: Dict[str, Any]) -> go.Figure:
+def build_stacked_cost_chart(calc: dict[str, Any]) -> go.Figure:
     """
     Build the signature stacked bar chart showing:
     - Principal loan amount

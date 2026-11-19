@@ -3,7 +3,7 @@ import json
 import os
 import re
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any
 
 import requests
 from dotenv import load_dotenv
@@ -27,14 +27,14 @@ def load_prompt(path: Path) -> str:
     return ""
 
 
-def clean_json_response(raw_text: str) -> Dict[str, Any]:
+def clean_json_response(raw_text: str) -> dict[str, Any]:
     """Parse JSON from raw LLM text, stripping markdown fences if present."""
     text = raw_text.strip()
     # Strip markdown code blocks
     if text.startswith("```"):
         text = re.sub(r"^```(?:json)?\s*", "", text)
         text = re.sub(r"\s*```$", "", text)
-    parsed: Dict[str, Any] = {}
+    parsed: dict[str, Any] = {}
     try:
         parsed = json.loads(text)
     except json.JSONDecodeError:
@@ -75,9 +75,9 @@ class LLMClient:
 
     def __init__(
         self,
-        provider: Optional[str] = None,
-        groq_api_key: Optional[str] = None,
-        gemini_api_key: Optional[str] = None,
+        provider: str | None = None,
+        groq_api_key: str | None = None,
+        gemini_api_key: str | None = None,
     ):
         raw_groq = groq_api_key or os.getenv("GROQ_API_KEY", "")
         raw_gemini = gemini_api_key or os.getenv("GEMINI_API_KEY", "")
@@ -104,7 +104,7 @@ class LLMClient:
         self.task_v1_template = load_prompt(TASK_PROMPT_V1_PATH)
         self.task_v2_template = load_prompt(TASK_PROMPT_V2_PATH)
 
-    def _call_groq(self, prompt: str) -> Dict[str, Any]:
+    def _call_groq(self, prompt: str) -> dict[str, Any]:
         """Send chat request to Groq API."""
         headers = {
             "Authorization": f"Bearer {self.groq_api_key}",
@@ -124,7 +124,7 @@ class LLMClient:
         content = resp.json()["choices"][0]["message"]["content"]
         return clean_json_response(content)
 
-    def _call_gemini(self, prompt: str) -> Dict[str, Any]:
+    def _call_gemini(self, prompt: str) -> dict[str, Any]:
         """Send generation request to Google Gemini API."""
         url = f"{GEMINI_API_URL}/{self.gemini_model}:generateContent"
         headers = {
@@ -144,7 +144,7 @@ class LLMClient:
         content = resp.json()["candidates"][0]["content"]["parts"][0]["text"]
         return clean_json_response(content)
 
-    def _fallback_generate(self, question: str, prompt_version: str = "v1") -> Dict[str, Any]:
+    def _fallback_generate(self, question: str, prompt_version: str = "v1") -> dict[str, Any]:
         """Deterministic grounded fallback when live API keys or network are unavailable."""
         q = question.lower()
 
@@ -319,7 +319,7 @@ class LLMClient:
             "follow_up": "Please provide your course, institution, and family income for specific eligibility guidance.",
         }
 
-    def chat(self, question: str, prompt_version: str = "v1") -> Dict[str, Any]:
+    def chat(self, question: str, prompt_version: str = "v1") -> dict[str, Any]:
         """Generate response via active provider, falling back safely on failure."""
         template = self.task_v2_template if prompt_version == "v2" else self.task_v1_template
         prompt = template.replace("{question}", question) if "{question}" in template else f"{template}\n\nQuestion: {question}"
@@ -343,6 +343,6 @@ class LLMClient:
 _default_client = LLMClient()
 
 
-def generate_chat_response(question: str, prompt_version: str = "v1") -> Dict[str, Any]:
+def generate_chat_response(question: str, prompt_version: str = "v1") -> dict[str, Any]:
     """Convenience function to generate a chat response."""
     return _default_client.chat(question, prompt_version=prompt_version)

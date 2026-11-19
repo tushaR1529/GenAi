@@ -3,7 +3,8 @@
 Embedding module for VidyaLoan documents.
 Provides embedding generation and semantic similarity search using Chroma's ONNX-based MiniLM model.
 """
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 import numpy as np
 from chromadb.utils import embedding_functions
 
@@ -17,7 +18,7 @@ class VidyaLoanEmbedder:
         self.model_name = model_name
         self._ef = embedding_functions.DefaultEmbeddingFunction()
 
-    def embed_texts(self, texts: List[str]) -> List[List[float]]:
+    def embed_texts(self, texts: list[str]) -> list[list[float]]:
         """Generate normalized vector embeddings for a list of texts."""
         if not texts:
             return []
@@ -25,13 +26,13 @@ class VidyaLoanEmbedder:
         # Convert numpy arrays if returned
         return [list(map(float, vec)) for vec in raw_embeddings]
 
-    def embed_query(self, query: str) -> List[float]:
+    def embed_query(self, query: str) -> list[float]:
         """Generate embedding vector for a single query."""
         results = self.embed_texts([query])
         return results[0] if results else []
 
 
-def cosine_similarity(a: List[float], b: List[float]) -> float:
+def cosine_similarity(a: list[float], b: list[float]) -> float:
     """Calculate cosine similarity between two float vectors."""
     va = np.array(a, dtype=np.float32)
     vb = np.array(b, dtype=np.float32)
@@ -44,10 +45,10 @@ def cosine_similarity(a: List[float], b: List[float]) -> float:
 
 def semantic_search_chunks(
     query: str,
-    chunks: List[DocumentChunk],
-    embedder: Optional[VidyaLoanEmbedder] = None,
+    chunks: list[DocumentChunk],
+    embedder: VidyaLoanEmbedder | None = None,
     top_k: int = 5,
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     """Perform pure in-memory semantic similarity search over a list of DocumentChunks."""
     if not chunks:
         return []
@@ -57,7 +58,7 @@ def semantic_search_chunks(
     chunk_embeddings = active_embedder.embed_texts(chunk_texts)
     query_embedding = active_embedder.embed_query(query)
 
-    scored_chunks: List[Dict[str, Any]] = []
+    scored_chunks: list[dict[str, Any]] = []
     for idx, chunk in enumerate(chunks):
         sim = cosine_similarity(query_embedding, chunk_embeddings[idx])
         scored_chunks.append({

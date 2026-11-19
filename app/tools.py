@@ -5,9 +5,9 @@ VidyaLoan Agent Tools:
    and post-moratorium monthly EMI under PM-Vidyalaxmi and PM-USP CSIS guidelines.
 2. vidyaloan_rag_search: Grounded semantic search over VidyaLoan scheme documents.
 """
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 from app.rag import answer_vidyaloan_question
-from app.vectorstore import get_vectorstore
 
 
 def education_loan_cost_calculator(
@@ -17,7 +17,7 @@ def education_loan_cost_calculator(
     family_income: float,
     is_qhei: bool = False,
     repayment_years: float = 15.0,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """
     Calculate education loan cost under Indian Government Schemes (PM-Vidyalaxmi & PM-USP CSIS).
 
@@ -67,12 +67,7 @@ def education_loan_cost_calculator(
         subsidy_type = "100% Full Interest Subsidy"
         subsidy_rate = rate_decimal
         govt_moratorium_share = subvention_eligible_loan * subsidy_rate * moratorium_years
-        # If loan exceeds 10 lakh, student pays interest on excess portion
-        if loan_amount > 1000000.0:
-            excess_loan = loan_amount - 1000000.0
-            excess_interest = excess_loan * rate_decimal * moratorium_years
-        else:
-            excess_interest = 0.0
+        # Note: If loan exceeds 10 lakh, student pays interest on excess portion via student_moratorium_share
 
     elif family_income <= 800000.0 and is_qhei:
         # Case B: PM-Vidyalaxmi (3% Interest Subvention for income <= 8 Lakh at QHEI)
@@ -155,7 +150,7 @@ def education_loan_cost_calculator(
     }
 
 
-def vidyaloan_rag_search(query: str, top_k: int = 3) -> Dict[str, Any]:
+def vidyaloan_rag_search(query: str, top_k: int = 3) -> dict[str, Any]:
     """
     Search VidyaLoan guidelines and FAQs to retrieve grounded scheme rules and citations.
     """
@@ -194,7 +189,7 @@ AVAILABLE_TOOLS = {
 }
 
 
-def execute_tool(tool_name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
+def execute_tool(tool_name: str, arguments: dict[str, Any]) -> dict[str, Any]:
     """Execute a registered tool with provided arguments."""
     if tool_name not in AVAILABLE_TOOLS:
         raise ValueError(f"Unknown tool '{tool_name}'. Available: {list(AVAILABLE_TOOLS.keys())}")

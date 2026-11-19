@@ -8,10 +8,10 @@ import json
 import logging
 import os
 import re
+import sys
 from dataclasses import asdict, dataclass
 from pathlib import Path
-import sys
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 if str(ROOT_DIR) not in sys.path:
@@ -35,10 +35,10 @@ class Citation:
     source: str
     page: int
     title: str
-    score: Optional[float] = None
-    chunk_id: Optional[str] = None
+    score: float | None = None
+    chunk_id: str | None = None
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return asdict(self)
 
 
@@ -46,11 +46,11 @@ class Citation:
 class RAGResponse:
     question: str
     answer: str
-    citations: List[Dict[str, Any]]
+    citations: list[dict[str, Any]]
     chunks_used: int
     confidence: float
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return asdict(self)
 
 
@@ -77,7 +77,7 @@ def is_out_of_scope_query(query: str) -> bool:
     return any(re.search(r"\b" + re.escape(term) + r"\b", q) for term in foreign_terms)
 
 
-def format_context_chunks(chunks: List[Dict[str, Any]]) -> str:
+def format_context_chunks(chunks: list[dict[str, Any]]) -> str:
     """Format retrieved vectorstore chunks into numbered markdown context blocks."""
     if not chunks:
         return "No relevant document chunks retrieved."
@@ -96,7 +96,7 @@ def format_context_chunks(chunks: List[Dict[str, Any]]) -> str:
     return "\n\n".join(formatted_blocks)
 
 
-def extract_citations_from_chunks(chunks: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+def extract_citations_from_chunks(chunks: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Extract deduplicated list of citations from retrieved chunks."""
     seen = set()
     citations = []
@@ -116,7 +116,7 @@ def extract_citations_from_chunks(chunks: List[Dict[str, Any]]) -> List[Dict[str
     return citations
 
 
-def parse_llm_json(raw_text: str) -> Optional[Dict[str, Any]]:
+def parse_llm_json(raw_text: str) -> dict[str, Any] | None:
     """Clean markdown fences and parse JSON output from LLM."""
     text = raw_text.strip()
     if text.startswith("```"):
@@ -143,7 +143,7 @@ def parse_llm_json(raw_text: str) -> Optional[Dict[str, Any]]:
 class VidyaLoanRAG:
     """RAG pipeline integrating Chroma retrieval, citation mapping, and LLM answering."""
 
-    def __init__(self, vectorstore: Optional[VidyaLoanVectorStore] = None):
+    def __init__(self, vectorstore: VidyaLoanVectorStore | None = None):
         self.vectorstore = vectorstore or get_vectorstore()
         raw_groq = os.getenv("GROQ_API_KEY", "")
         raw_gemini = os.getenv("GEMINI_API_KEY", "")
@@ -163,13 +163,13 @@ class VidyaLoanRAG:
         self.gemini_model = os.getenv("GEMINI_MODEL", "gemini-3.5-flash")
         self.groq_model = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
 
-    def retrieve(self, query: str, top_k: int = 3) -> List[Dict[str, Any]]:
+    def retrieve(self, query: str, top_k: int = 3) -> list[dict[str, Any]]:
         """Retrieve top-k relevant chunks from vectorstore."""
         if not query.strip():
             return []
         return self.vectorstore.search(query, n_results=top_k)
 
-    def _call_groq(self, prompt: str, system_prompt: str) -> Dict[str, Any]:
+    def _call_groq(self, prompt: str, system_prompt: str) -> dict[str, Any]:
         headers = {
             "Authorization": f"Bearer {self.groq_api_key}",
             "Content-Type": "application/json",
@@ -188,7 +188,7 @@ class VidyaLoanRAG:
         content = resp.json()["choices"][0]["message"]["content"]
         return parse_llm_json(content) or {"answer": content}
 
-    def _call_gemini(self, prompt: str, system_prompt: str) -> Dict[str, Any]:
+    def _call_gemini(self, prompt: str, system_prompt: str) -> dict[str, Any]:
         url = f"{GEMINI_API_URL}/{self.gemini_model}:generateContent"
         headers = {
             "x-goog-api-key": self.gemini_api_key,
@@ -210,8 +210,8 @@ class VidyaLoanRAG:
     def _synthesize_grounded_fallback(
         self,
         question: str,
-        chunks: List[Dict[str, Any]],
-    ) -> Dict[str, Any]:
+        chunks: list[dict[str, Any]],
+    ) -> dict[str, Any]:
         """
         Deterministic, fully grounded RAG synthesis using retrieved chunks.
         Guarantees accurate citations and strict 'I don't know' for Q6 / out-of-scope questions.
@@ -440,7 +440,7 @@ class VidyaLoanRAG:
         self,
         question: str,
         top_k: int = 3,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Main entry point for answering questions via RAG:
         1. Checks out-of-scope guardrail (Q6 must say 'I don't know').
@@ -549,10 +549,10 @@ class VidyaLoanRAG:
 
 
 # Global RAG singleton
-_rag_instance: Optional[VidyaLoanRAG] = None
+_rag_instance: VidyaLoanRAG | None = None
 
 
-def get_rag_pipeline(vectorstore: Optional[VidyaLoanVectorStore] = None) -> VidyaLoanRAG:
+def get_rag_pipeline(vectorstore: VidyaLoanVectorStore | None = None) -> VidyaLoanRAG:
     """Return initialized VidyaLoanRAG instance."""
     global _rag_instance
     if vectorstore is not None:
@@ -565,8 +565,8 @@ def get_rag_pipeline(vectorstore: Optional[VidyaLoanVectorStore] = None) -> Vidy
 def answer_vidyaloan_question(
     question: str,
     top_k: int = 3,
-    vectorstore: Optional[VidyaLoanVectorStore] = None,
-) -> Dict[str, Any]:
+    vectorstore: VidyaLoanVectorStore | None = None,
+) -> dict[str, Any]:
     """Convenience helper to answer questions using RAG."""
     pipeline = get_rag_pipeline(vectorstore=vectorstore)
     return pipeline.answer_question(question, top_k=top_k)

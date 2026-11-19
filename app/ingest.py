@@ -4,7 +4,6 @@ import re
 import sys
 from dataclasses import asdict
 from pathlib import Path
-from typing import Optional
 
 # Ensure root directory is on sys.path
 ROOT_DIR = Path(__file__).resolve().parent.parent
@@ -48,7 +47,7 @@ def clean(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
-def find_income_limit(text: str, scheme: str = "") -> Optional[str]:
+def find_income_limit(text: str, scheme: str = "") -> str | None:
     """Extract or determine the applicable family income limit."""
     t = text.lower()
 
@@ -96,7 +95,7 @@ def find_income_limit(text: str, scheme: str = "") -> Optional[str]:
     return None
 
 
-def find_loan_limit(text: str, scheme: str = "") -> Optional[str]:
+def find_loan_limit(text: str, scheme: str = "") -> str | None:
     """Extract or determine the applicable loan ceiling / coverage limit."""
     t = text.lower()
 
