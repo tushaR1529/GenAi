@@ -5,6 +5,14 @@ from app.smart_search import SmartSearch
 from app.vectorstore import get_vectorstore
 
 
+def test_search():
+    engine = SmartSearch()
+    results = engine.search("interest subvention", top_k=3)
+    assert isinstance(results, list)
+    assert len(results) > 0
+    assert "score" in results[0]
+
+
 def test_tfidf_smart_search_finds_relevant_records():
     engine = SmartSearch()
     results = engine.search("interest subvention", top_k=3)

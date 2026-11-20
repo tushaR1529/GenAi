@@ -4,6 +4,14 @@ Unit tests for record loading, lookup, and keyword search.
 from app.records import count_by, get_by_id, load_records, search
 
 
+def test_load_records():
+    records = load_records()
+    assert isinstance(records, list)
+    assert len(records) > 0
+    assert "id" in records[0]
+    assert "scheme_name" in records[0]
+
+
 def test_load_records_returns_non_empty_list():
     records = load_records()
     assert isinstance(records, list)

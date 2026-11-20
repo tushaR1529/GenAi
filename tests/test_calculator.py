@@ -4,6 +4,19 @@ Unit tests for the education_loan_cost_calculator agent tool.
 from app.tools import education_loan_cost_calculator
 
 
+def test_education_loan_cost_calculator():
+    res = education_loan_cost_calculator(
+        loan_amount=750000.0,
+        interest_rate=9.0,
+        course_years=4.0,
+        family_income=400000.0,
+        is_qhei=True,
+    )
+    assert res["government_share"] > 0
+    assert res["monthly_emi"] > 0
+    assert "PM-USP CSIS" in res["scheme_applied"]
+
+
 def test_csis_full_subsidy_under_4_point_5_lakh():
     # 8 Lakh loan, 9.5% interest, 4 years course, 4 Lakh family income (CSIS eligible)
     res = education_loan_cost_calculator(
