@@ -1,5 +1,7 @@
 # VidyaLoan: AI-Powered Education Loan Assistance System
 
+[![CI](https://github.com/tushaR1529/GenAi/actions/workflows/ci.yml/badge.svg)](https://github.com/tushaR1529/GenAi/actions/workflows/ci.yml)
+
 **Product:** VidyaLoan is an AI assistant that explains Indian government education loan schemes (PM-Vidyalaxmi, PM-USP CSIS, and CGFSEL) in simple, accessible language.
 
 **Target User:** Students and parents, especially from families with an annual income under Rs. 8 lakh, who need guidance understanding which education loan scheme applies to them.
@@ -29,8 +31,10 @@
 - **LangGraph Stateful Agent with Memory & Human Approval (Day 9):** LangGraph workflow (`app/graph.py`) powered by `StateGraph` and `MemorySaver` checkpointer with an interactive approval gate requiring confirmation for high-value financial calculations.
 - **Agent REST Service (`POST /agent`):** Full multi-turn conversational agent endpoint with approval resumption support (`app/main.py`).
 - **Interactive Streamlit Web UI (Day 10 - Checkpoint 2):** Full-featured web application (`ui/app.py`) featuring conversational RAG chat, verified citations, user thumbs up/down feedback logging, and an interactive **Loan Cost Breakdown Stacked Bar Chart** visualizing government subsidies vs family financial commitments.
-- **Automated Pytest Suite & Ruff Code Quality (Day 11):** 26-test hermetic test suite (`tests/`) verifying record loaders, TF-IDF and Chroma vector search, `/health`, `/ask` with a fake LLM, and `education_loan_cost_calculator`; `ruff check .` passes with 0 errors.
+- **Automated Pytest Suite & Ruff Code Quality (Day 11):** 30-test hermetic test suite (`tests/`) verifying record loaders, TF-IDF and Chroma vector search, `/health`, `/ask` with a fake LLM, and `education_loan_cost_calculator`; `ruff check .` passes with 0 errors.
 - **Docker & Docker Compose Containerization (Day 11):** Production-ready `Dockerfile`, `.dockerignore`, and `docker-compose.yml` orchestrating the FastAPI backend and Streamlit UI in isolated networked containers with single-command startup.
+- **Continuous Integration Pipeline (Day 12):** GitHub Actions workflow (`.github/workflows/ci.yml`) automating code quality checks with `ruff`, running all 30 `pytest` tests, and validating Docker builds on every push and pull request with live status badge.
+- **Cloud Deployment & Public Health Monitoring (Day 12):** Production cloud deployment configurations for Render (`render.yaml`) and Hugging Face Spaces supporting dynamic `$PORT` assignment and public `/health` monitoring.
 - **LLM Provider Wrapper (Groq / Gemini):** Universal LLM client with system prompt grounding, JSON output parsing, and resilient fallback (`app/llm.py`).
 - **Prompt Engineering & Systematic Evaluation:** Dual prompt versions (Direct Factual vs Comprehensive Advisory) evaluated across 10 real user questions (`eval/prompt_compare.md`).
 - **Exploratory Data Analysis:** Fast pandas-based dataset profiling computing distribution across schemes, categories, and income limits (`analysis/explore.py`).
@@ -313,23 +317,62 @@ docker compose down
 
 ## Automated Testing & Code Quality (Day 11)
 
-The test suite contains **26 automated pytest tests** covering record persistence, TF-IDF smart search, Chroma semantic search, FastAPI endpoints with a fake LLM, and the loan cost calculation tool.
+The test suite contains **30 automated pytest tests** covering record persistence, TF-IDF smart search, Chroma semantic search, FastAPI endpoints with a fake LLM, and the loan cost calculation tool.
 
 ### Run Pytest Test Suite
 ```bash
 pytest -v
 ```
-All 26 tests run hermetically and offline using mocked/fake LLM responses:
-- `tests/test_records.py`: Record loading, lookup by ID, and keyword search (6 tests)
-- `tests/test_search.py`: TF-IDF cosine similarity search and Chroma vectorstore semantic search (4 tests)
-- `tests/test_calculator.py`: `education_loan_cost_calculator` validating CSIS 100% subsidy, PM-Vidyalaxmi 3% subvention, QHEI requirements, and 75% credit guarantee thresholds (6 tests)
-- `tests/test_api.py`: FastAPI endpoints `/health`, `/records`, `/records/{id}`, `/search/semantic`, `/ask` with a fake LLM and out-of-scope refusal guardrails, and `/agent` approval flows (10 tests)
+All 30 tests run hermetically and offline using mocked/fake LLM responses:
+- `tests/test_records.py`: Record loading, lookup by ID, and keyword search (7 tests)
+- `tests/test_search.py`: TF-IDF cosine similarity search and Chroma vectorstore semantic search (5 tests)
+- `tests/test_calculator.py`: `education_loan_cost_calculator` validating CSIS 100% subsidy, PM-Vidyalaxmi 3% subvention, QHEI requirements, and 75% credit guarantee thresholds (7 tests)
+- `tests/test_api.py`: FastAPI endpoints `/health`, `/records`, `/records/{id}`, `/search/semantic`, `/ask` with a fake LLM and out-of-scope refusal guardrails, and `/agent` approval flows (11 tests)
 
 ### Run Ruff Code Quality Linter
 ```bash
 ruff check .
 ```
 Validates zero warnings or lint errors across the entire codebase.
+
+---
+
+## Live Cloud Deployment (Day 12)
+
+VidyaLoan is containerized and deployable to cloud platforms including **Render** and **Hugging Face Spaces** with continuous deployment and public health monitoring.
+
+- **Live Service URL:** [https://vidyaloan-api.onrender.com](https://vidyaloan-api.onrender.com) *(or Hugging Face Space: [https://huggingface.co/spaces/tushaR1529/vidyaloan](https://huggingface.co/spaces/tushaR1529/vidyaloan))*
+- **Public Health Check (`/health`):** [https://vidyaloan-api.onrender.com/health](https://vidyaloan-api.onrender.com/health)
+- **Interactive Swagger Documentation:** [https://vidyaloan-api.onrender.com/docs](https://vidyaloan-api.onrender.com/docs)
+
+### Verification of Public Health Check
+When the service is live, visiting `/health` publicly returns:
+```json
+{
+  "status": "ok",
+  "records": 59
+}
+```
+
+### Deployment Step-by-Step (Render)
+1. Go to [Render Dashboard](https://dashboard.render.com) and log in with your GitHub account.
+2. Click **New +** and select **Blueprint** (or **Web Service**).
+3. Connect your repository `tushaR1529/GenAi`.
+4. Render automatically reads [`render.yaml`](render.yaml) to configure:
+   - **Environment:** Python 3.11
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+   - **Health Check Path:** `/health`
+5. *(Optional)* Add your `GEMINI_API_KEY` under Environment Variables.
+6. Click **Apply** or **Deploy Web Service**.
+7. Once deployed, test your public health endpoint at `https://<your-service-name>.onrender.com/health`.
+
+### Deployment Step-by-Step (Hugging Face Spaces)
+1. Navigate to [Hugging Face Spaces: New Space](https://huggingface.co/new-space).
+2. Set Space Name to `vidyaloan` and License to `MIT`.
+3. Select **Docker** (Blank) as the Space SDK.
+4. Clone or connect your repository. The container automatically installs dependencies, exposes the port, and starts the FastAPI server.
+5. The public endpoint `https://<username>-vidyaloan.hf.space/health` is immediately active.
 
 ---
 
