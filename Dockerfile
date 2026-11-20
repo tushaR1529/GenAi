@@ -27,6 +27,7 @@ COPY prompts/ /app/prompts/
 COPY ui/ /app/ui/
 COPY tests/ /app/tests/
 COPY pyproject.toml /app/
+COPY run_app.py /app/
 COPY README.md /app/
 
 # Expose FastAPI backend (8000) and Streamlit frontend (8501)
@@ -34,5 +35,5 @@ EXPOSE 8000 8501
 
 ENV PORT=8000
 
-# Default command starts the FastAPI server (supports dynamic $PORT from cloud providers like Render / Hugging Face)
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+# Default command starts the unified server running Streamlit UI at / with FastAPI /health
+CMD ["sh", "-c", "python run_app.py"]
