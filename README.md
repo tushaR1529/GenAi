@@ -2,9 +2,7 @@
 
 [![CI](https://github.com/tushaR1529/GenAi/actions/workflows/ci.yml/badge.svg)](https://github.com/tushaR1529/GenAi/actions/workflows/ci.yml)
 [![Live Demo](https://img.shields.io/badge/Demo-Live_on_Render-blue?logo=render)](https://vidyaloan-api.onrender.com)
-[![Pytest Tests](https://img.shields.io/badge/Tests-34_Passing-brightgreen?logo=pytest)](file:///c:/Users/TusharV/Desktop/vidyaloan/GenAi/tests)
-[![Code Style: Ruff](https://img.shields.io/badge/Code_Style-Ruff_0_Errors-black)](https://github.com/astral-sh/ruff)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 
 > **Empowering ambitious Indian students and low-income families with transparent, hallucination-free AI guidance and real-time financial simulation for Indian Central Sector education loan schemes.**
 
