@@ -6,7 +6,7 @@
 
 > **Empowering ambitious Indian students and low-income families with transparent, hallucination-free AI guidance and real-time financial simulation for Indian Central Sector education loan schemes.**
 
-📺 **[▶️ Watch the 2-Minute VidyaLoan Product Demo Video](https://youtu.be/demo-vidyaloan)**  
+📺 **[▶️ Watch the 2-Minute VidyaLoan Product Demo Video](https://drive.google.com/drive/folders/1SNiuH2Vqq4F4ww6EFB6p7WLinaV7AK3h?usp=drive_link)**  
 🌐 **[Live Cloud Deployment on Render](https://vidyaloan-api.onrender.com)** | **[Public Health Endpoint (`/health`)](https://vidyaloan-api.onrender.com/health)** | **[Interactive API Documentation (`/docs`)](https://vidyaloan-api.onrender.com/docs)**
 
 ---
