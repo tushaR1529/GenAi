@@ -23,6 +23,9 @@ However, students and parents face severe barriers when navigating these schemes
 
 **VidyaLoan solves this.** It acts as an autonomous, 100% grounded financial advisor that pairs conversational AI with authoritative government document retrieval and a deterministic financial simulation engine.
 
+<img width="638" height="295" alt="image" src="https://github.com/user-attachments/assets/63e104a1-4d36-4565-860f-c0ed3472f592" />
+
+
 ---
 
 ## 🏗️ System Architecture
