@@ -147,6 +147,15 @@ class AskResponse(BaseModel):
     citations: list[CitationModel]
     chunks_used: int
     confidence: float
+    latency_ms: float | None = None
+    prompt_tokens: int | None = None
+    completion_tokens: int | None = None
+    total_tokens: int | None = None
+    cached: bool | None = False
+
+
+MAX_QUERY_LENGTH = 500
+MIN_QUERY_LENGTH = 3
 
 
 @app.post("/ask", response_model=AskResponse)
@@ -154,14 +163,37 @@ def ask_endpoint(req: AskRequest):
     """
     RAG-powered endpoint answering questions strictly using retrieved chunks
     with source citations. Rejects out-of-scope foreign queries (Q6) with 'I don't know'.
+    Enforces input length limits (3-500 chars).
     """
     q = (req.question or "").strip()
     if not q:
         raise HTTPException(status_code=400, detail="Question cannot be empty")
+    if len(q) < MIN_QUERY_LENGTH:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Question must be at least {MIN_QUERY_LENGTH} characters long",
+        )
+    if len(q) > MAX_QUERY_LENGTH:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Question exceeds maximum allowed limit of {MAX_QUERY_LENGTH} characters",
+        )
 
     top_k = req.top_k if req.top_k and req.top_k > 0 else 3
     result = answer_vidyaloan_question(q, top_k=top_k)
     return result
+
+
+@app.get("/stats")
+def stats_endpoint():
+    """Return production telemetry, latency percentiles, and cache statistics."""
+    from app.cache import get_query_cache
+    from app.telemetry import get_telemetry_summary
+
+    return {
+        "cache": get_query_cache().get_stats(),
+        "telemetry": get_telemetry_summary(),
+    }
 
 
 class AgentRequest(BaseModel):

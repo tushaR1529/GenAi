@@ -9,6 +9,7 @@ import logging
 import os
 import re
 import sys
+import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
@@ -20,6 +21,8 @@ if str(ROOT_DIR) not in sys.path:
 import requests
 from dotenv import load_dotenv
 
+from app.cache import get_query_cache
+from app.telemetry import estimate_tokens, is_prompt_injection, log_request_telemetry
 from app.vectorstore import VidyaLoanVectorStore, get_vectorstore
 
 load_dotenv()
@@ -449,6 +452,7 @@ class VidyaLoanRAG:
         4. Calls LLM (Gemini/Groq) or grounded fallback.
         5. Returns structured response with answer, citations, and confidence.
         """
+        start_time = time.perf_counter()
         clean_q = question.strip()
         if not clean_q:
             return {
@@ -457,27 +461,88 @@ class VidyaLoanRAG:
                 "citations": [],
                 "chunks_used": 0,
                 "confidence": 0.0,
+                "latency_ms": 0.5,
+                "prompt_tokens": 0,
+                "completion_tokens": 8,
+                "total_tokens": 8,
+                "cached": False,
             }
 
-        # Guardrail: Out-of-scope check (must say "I don't know" for foreign studies / Q6)
-        if is_out_of_scope_query(clean_q):
-            return {
+        # 0. Fast Cache Lookup
+        cache = get_query_cache()
+        cached_hit = cache.get(clean_q)
+        if cached_hit is not None:
+            latency_ms = round((time.perf_counter() - start_time) * 1000.0, 2)
+            cached_res = dict(cached_hit)
+            cached_res["latency_ms"] = latency_ms
+            cached_res["cached"] = True
+            log_request_telemetry(
+                endpoint="/ask",
+                question=clean_q,
+                latency_ms=latency_ms,
+                prompt_tokens=cached_res.get("prompt_tokens", estimate_tokens(clean_q)),
+                completion_tokens=0,
+                cached=True,
+            )
+            return cached_res
+
+        # 1. Prompt Injection Defense Guardrail
+        if is_prompt_injection(clean_q):
+            injection_refusal = (
+                "I cannot fulfill this request. I am VidyaLoan AI Assistant, strictly dedicated to "
+                "providing accurate information about Indian government education loan schemes (PM-Vidyalaxmi, "
+                "PM-USP CSIS, and CGFSEL). I cannot alter my operational guidelines, bypass policies, "
+                "or disclose internal system prompts."
+            )
+            latency_ms = round((time.perf_counter() - start_time) * 1000.0, 2)
+            p_tokens = estimate_tokens(clean_q)
+            c_tokens = estimate_tokens(injection_refusal)
+            res = {
                 "question": clean_q,
-                "answer": (
-                    "I don't know. The PM-Vidyalaxmi scheme and PM-USP CSIS only cover domestic higher education "
-                    "programs in eligible Quality Higher Education Institutions (QHEIs) in India. They do not cover "
-                    "foreign studies or universities abroad such as Oxford University in the UK."
-                ),
+                "answer": injection_refusal,
+                "citations": [],
+                "chunks_used": 0,
+                "confidence": 1.0,
+                "latency_ms": latency_ms,
+                "prompt_tokens": p_tokens,
+                "completion_tokens": c_tokens,
+                "total_tokens": p_tokens + c_tokens,
+                "cached": False,
+            }
+            log_request_telemetry("/ask", clean_q, latency_ms, p_tokens, c_tokens, cached=False)
+            return res
+
+        # 2. Out-of-scope check (must say 'I don't know' for foreign studies / Q6)
+        if is_out_of_scope_query(clean_q):
+            out_answer = (
+                "I don't know. The PM-Vidyalaxmi scheme and PM-USP CSIS only cover domestic higher education "
+                "programs in eligible Quality Higher Education Institutions (QHEIs) in India. They do not cover "
+                "foreign studies or universities abroad such as Oxford University in the UK."
+            )
+            latency_ms = round((time.perf_counter() - start_time) * 1000.0, 2)
+            p_tokens = estimate_tokens(clean_q)
+            c_tokens = estimate_tokens(out_answer)
+            res = {
+                "question": clean_q,
+                "answer": out_answer,
                 "citations": [],
                 "chunks_used": 0,
                 "confidence": 0.99,
+                "latency_ms": latency_ms,
+                "prompt_tokens": p_tokens,
+                "completion_tokens": c_tokens,
+                "total_tokens": p_tokens + c_tokens,
+                "cached": False,
             }
+            cache.set(clean_q, res)
+            log_request_telemetry("/ask", clean_q, latency_ms, p_tokens, c_tokens, cached=False)
+            return res
 
-        # 2. Retrieve chunks
+        # 3. Retrieve chunks
         hits = self.retrieve(clean_q, top_k=top_k)
         citations = extract_citations_from_chunks(hits)
 
-        # 3. Formulate RAG Prompt
+        # 4. Formulate RAG Prompt
         context_str = format_context_chunks(hits)
         system_prompt = (
             "You are VidyaLoan RAG Assistant, an expert AI advisor for Indian government education loan schemes "
@@ -492,25 +557,35 @@ class VidyaLoanRAG:
             "and 'citations' (list of objects with source, page, title)."
         )
         user_prompt = f"USER QUESTION:\n{clean_q}\n\nRETRIEVED CONTEXT:\n{context_str}\n\nProvide your JSON response:"
+        p_tokens = estimate_tokens(system_prompt + "\n" + user_prompt)
 
-        # 4. Try LLM provider if configured
+        # 5. Try LLM provider if configured
         if self.provider == "gemini" and self.gemini_api_key:
             try:
                 res = self._call_gemini(user_prompt, system_prompt)
                 ans = str(res.get("answer", "")).strip()
                 if ans:
-                    # Enforce Q6 out-of-scope guardrail
                     if is_out_of_scope_query(clean_q) and "i don't know" not in ans.lower():
                         ans = f"I don't know. {ans}"
                     raw_cits = res.get("citations")
                     out_cits = raw_cits if isinstance(raw_cits, list) and raw_cits else citations
-                    return {
+                    latency_ms = round((time.perf_counter() - start_time) * 1000.0, 2)
+                    c_tokens = estimate_tokens(ans)
+                    rag_res = {
                         "question": clean_q,
                         "answer": ans,
                         "citations": out_cits,
                         "chunks_used": len(hits),
                         "confidence": float(res.get("confidence", 0.95)),
+                        "latency_ms": latency_ms,
+                        "prompt_tokens": p_tokens,
+                        "completion_tokens": c_tokens,
+                        "total_tokens": p_tokens + c_tokens,
+                        "cached": False,
                     }
+                    cache.set(clean_q, rag_res)
+                    log_request_telemetry("/ask", clean_q, latency_ms, p_tokens, c_tokens, cached=False)
+                    return rag_res
             except Exception as e:
                 logger.warning("Gemini RAG call failed: %s. Using grounded fallback.", e)
 
@@ -523,29 +598,49 @@ class VidyaLoanRAG:
                         ans = f"I don't know. {ans}"
                     raw_cits = res.get("citations")
                     out_cits = raw_cits if isinstance(raw_cits, list) and raw_cits else citations
-                    return {
+                    latency_ms = round((time.perf_counter() - start_time) * 1000.0, 2)
+                    c_tokens = estimate_tokens(ans)
+                    rag_res = {
                         "question": clean_q,
                         "answer": ans,
                         "citations": out_cits,
                         "chunks_used": len(hits),
                         "confidence": float(res.get("confidence", 0.95)),
+                        "latency_ms": latency_ms,
+                        "prompt_tokens": p_tokens,
+                        "completion_tokens": c_tokens,
+                        "total_tokens": p_tokens + c_tokens,
+                        "cached": False,
                     }
+                    cache.set(clean_q, rag_res)
+                    log_request_telemetry("/ask", clean_q, latency_ms, p_tokens, c_tokens, cached=False)
+                    return rag_res
             except Exception as e:
                 logger.warning("Groq RAG call failed: %s. Using grounded fallback.", e)
 
-        # 5. Fallback grounded generation
+        # 6. Fallback grounded generation
         fallback_res = self._synthesize_grounded_fallback(clean_q, hits)
         ans = fallback_res["answer"]
         if is_out_of_scope_query(clean_q) and "i don't know" not in ans.lower():
             ans = f"I don't know. {ans}"
 
-        return {
+        latency_ms = round((time.perf_counter() - start_time) * 1000.0, 2)
+        c_tokens = estimate_tokens(ans)
+        out_res = {
             "question": clean_q,
             "answer": ans,
             "citations": fallback_res.get("citations", citations),
             "chunks_used": len(hits),
             "confidence": fallback_res.get("confidence", 0.92),
+            "latency_ms": latency_ms,
+            "prompt_tokens": p_tokens,
+            "completion_tokens": c_tokens,
+            "total_tokens": p_tokens + c_tokens,
+            "cached": False,
         }
+        cache.set(clean_q, out_res)
+        log_request_telemetry("/ask", clean_q, latency_ms, p_tokens, c_tokens, cached=False)
+        return out_res
 
 
 # Global RAG singleton

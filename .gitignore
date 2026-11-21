@@ -18,6 +18,9 @@ ENV/
 htmlcov/
 .ruff_cache/
 
+# Runtime telemetry logs
+data/request_logs.jsonl
+
 # Local Vector Database & Chroma caches
 data/chroma_db/
 chroma_db/
