@@ -1,7 +1,7 @@
 # VidyaLoan: AI-Powered Education Loan Assistance Platform
 
 [![CI](https://github.com/tushaR1529/GenAi/actions/workflows/ci.yml/badge.svg)](https://github.com/tushaR1529/GenAi/actions/workflows/ci.yml)
-[![Live Demo](https://img.shields.io/badge/Demo-Live_on_Render-blue?logo=render)](https://vidyaloan-api.onrender.com)
+[![Live Demo](https://img.shields.io/badge/Demo-Live_on_Render-blue?logo=render)](https://vidyaloan.onrender.com)
 
 
 > **Empowering ambitious Indian students and low-income families with transparent, hallucination-free AI guidance and real-time financial simulation for Indian Central Sector education loan schemes.**
