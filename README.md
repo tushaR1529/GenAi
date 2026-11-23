@@ -177,6 +177,7 @@ VidyaLoan incorporates production-grade observability, telemetry, defensive secu
 ├── docs/
 │   ├── checkpoint2_demo.png   # Streamlit UI live demo screenshot
 │   ├── how_llms_work.md       # Technical explanation of LLM mechanics
+│   ├── interview.md           # 60s pitch, 10 interview Q&As, hardest problem story & demo rehearsals
 │   └── resume.md              # 3 quantified engineering-grade resume bullets
 ├── eval/
 │   ├── eval_set.json          # 15-question benchmark evaluation dataset
@@ -193,6 +194,7 @@ VidyaLoan incorporates production-grade observability, telemetry, defensive secu
 │   └── app.py                 # Streamlit UI with Plotly stacked bar chart & feedback
 ├── Dockerfile                 # Multi-stage production container image
 ├── docker-compose.yml         # Container orchestration (API + UI)
+├── PROGRESS.md                # 14-day milestone tracker (all items closed)
 ├── pyproject.toml             # Ruff & Pytest configuration
 ├── render.yaml                # Render cloud deployment specification
 ├── requirements.txt           # Python dependencies
